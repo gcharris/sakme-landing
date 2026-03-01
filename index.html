@@ -57,16 +57,23 @@
             background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
 
-        .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--text) 0%, var(--accent-warm) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .brand-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand-img {
+            /* The image files likely have padding/backgrounds. 
+               We use mix-blend-mode to drop the background and 
+               object-fit/clip to handle sizing. */
+            height: clamp(80px, 15vw, 150px);
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: screen;
+            /* Invert if the image was generated on a white background, 
+               otherwise adjust filters as needed to get white/warm text */
+            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         .etymology {
@@ -355,10 +362,12 @@
             line-height: 1.8;
         }
 
-        .opensource .engine-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--accent-warm);
+        .engine-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            text-transform: lowercase;
         }
 
         /* --- Footer --- */
@@ -406,7 +415,9 @@
 
     <!-- Hero -->
     <section class="hero">
-        <h1 class="brand">Sakme</h1>
+        <h1 class="brand-container">
+            <img src="assets/sakme_logo.png" alt="sakme" class="brand-img">
+        </h1>
         <p class="etymology">Georgian: <em>საქმე</em> — your work, your craft, your affair</p>
         <p class="hero-pitch">
             A creative workspace that remembers. Bring in your material — notes, research, drafts, inspiration.
@@ -537,7 +548,7 @@
         <div class="opensource-inner">
             <h2>Built on open foundations</h2>
             <p>
-                Sakme is powered by <span class="engine-name">Seitiate</span> — an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
+                Sakme is powered by <img src="assets/seitiate_logo.png" alt="seitiate" class="engine-logo"> — an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
             </p>
             <a href="https://seitiate.com" class="cta-secondary">Explore Seitiate</a>
         </div>
@@ -545,8 +556,8 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-brand">Sakme</div>
-        <p>&copy; 2026 Sakme. All rights reserved.</p>
+        <div class="footer-brand">sakme</div>
+        <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
         <div class="footer-links">
             <a href="mailto:hello@sakme.ai">Contact</a>
             <a href="https://seitiate.com">Seitiate (Open Source)</a>
