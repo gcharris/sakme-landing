@@ -113,12 +113,13 @@
         .brand-img {
             /* Sakme logo is DARK text on WHITE background.
                invert(1) flips to white text on black background.
-               contrast(1.5) crushes any near-black to true black.
-               mix-blend-mode: screen drops black (transparent), keeps white text. */
+               contrast(5) posterizes: crushes near-black bg → pure black,
+               pushes white text → pure white.
+               screen blend mode drops pure black (transparent), keeps white text. */
             height: clamp(60px, 12vw, 110px);
             width: auto;
             object-fit: contain;
-            filter: invert(1) contrast(1.5) brightness(1.1);
+            filter: invert(1) contrast(5);
             mix-blend-mode: screen;
         }
 
@@ -614,7 +615,7 @@
     <!-- Footer -->
     <footer>
         <div class="footer-brand">sakme</div>
-        <p>&copy; 2026 Sakme. All rights reserved.</p>
+        <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
         <div class="footer-links">
             <a href="mailto:hello@sakme.ai">Contact</a>
             <a href="https://seitiate.com">Seitiate (Open Source)</a>
