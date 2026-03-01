@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakme — Your Work. Your Craft. Your Becoming.</title>
+    <meta name="description" content="Sakme is a creative workspace that remembers. Bring your material, create with AI that learns what 'good' means to you, and build understanding that compounds with every session.">
+    <meta property="og:title" content="Sakme — Your Work. Your Craft. Your Becoming.">
+    <meta property="og:description" content="A creative workspace that remembers. The more you create, the more it understands what matters to you.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sakme.ai">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --surface: #111114;
+            --border: #1e1e24;
+            --text: #e8e6e3;
+            --text-secondary: #9a9a9f;
+            --accent-red: #c0392b;
+            --accent-green: #27ae60;
+            --accent-blue: #5b7db1;
+            --accent-warm: #d4a574;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Hero --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent-warm) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .etymology {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+        }
+
+        .etymology em {
+            font-style: normal;
+            color: var(--accent-warm);
+        }
+
+        .hero-pitch {
+            max-width: 620px;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            margin-bottom: 3rem;
+        }
+
+        .hero-pitch strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            padding: 0.85rem 2.2rem;
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: opacity 0.2s;
+        }
+
+        .cta-primary:hover { opacity: 0.88; }
+
+        .cta-secondary {
+            display: inline-block;
+            padding: 0.85rem 2.2rem;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+
+        /* --- Three Domains --- */
+        .domains {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .domains-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .domains-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .domains-header p {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .domain-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+        }
+
+        .domain-card .domain-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .domain-card.body .domain-label { color: var(--accent-red); }
+        .domain-card.mind .domain-label { color: var(--accent-green); }
+        .domain-card.spirit .domain-label { color: var(--accent-blue); }
+
+        .domain-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .domain-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .domain-features {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .domain-features span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .domain-features span::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--border);
+        }
+
+        /* --- How It Works --- */
+        .how {
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .how-inner {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .how h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .how-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            align-items: flex-start;
+        }
+
+        .how-step .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--accent-warm);
+            opacity: 0.5;
+            flex-shrink: 0;
+            width: 2rem;
+            text-align: center;
+        }
+
+        .how-step h3 {
+            font-size: 1.05rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .how-step p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* --- Tiers --- */
+        .tiers {
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .tiers-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tiers h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .tiers-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3.5rem;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .tier-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tier-card.featured {
+            border-color: var(--accent-warm);
+        }
+
+        .tier-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-price {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tier-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex: 1;
+        }
+
+        /* --- Open Source --- */
+        .opensource {
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .opensource-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .opensource h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .opensource p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .opensource .engine-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent-warm);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: var(--text); }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.8rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            .domain-grid { grid-template-columns: 1fr; }
+            .tier-grid { grid-template-columns: 1fr; }
+            .hero { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="brand">Sakme</h1>
+        <p class="etymology">Georgian: <em>საქმე</em> — your work, your craft, your affair</p>
+        <p class="hero-pitch">
+            A creative workspace that remembers. Bring in your material — notes, research, drafts, inspiration.
+            <strong>Create with AI that learns what "good" means to you.</strong>
+            The more you create, the more it understands. Your work becomes your own.
+        </p>
+        <div class="cta-group">
+            <a href="#tiers" class="cta-primary">Start creating</a>
+            <a href="#how" class="cta-secondary">How it works</a>
+        </div>
+    </section>
+
+    <!-- Three Domains -->
+    <section class="domains">
+        <div class="domains-header">
+            <h2>What you have. What could happen. What it means.</h2>
+            <p>Three layers of creative intelligence, working together.</p>
+        </div>
+        <div class="domain-grid">
+            <div class="domain-card body">
+                <div class="domain-label">What You Have</div>
+                <h3>Your Memory</h3>
+                <p>Everything you've brought in and everything you've decided. Your sources, your taste, your accumulated knowledge — growing with every session.</p>
+                <div class="domain-features">
+                    <span>Connect your notes, research, and inspiration</span>
+                    <span>Morning reflections that compound over time</span>
+                    <span>Decisions you've made, patterns you've discovered</span>
+                </div>
+            </div>
+            <div class="domain-card mind">
+                <div class="domain-label">What Could Happen</div>
+                <h3>Your Options</h3>
+                <p>AI that explores more possibilities than you could alone. Multiple directions, variations, and approaches — then you choose.</p>
+                <div class="domain-features">
+                    <span>Multiple variations, not just one answer</span>
+                    <span>Voice calibration that finds your style</span>
+                    <span>The wild card — the unexpected direction that works</span>
+                </div>
+            </div>
+            <div class="domain-card spirit">
+                <div class="domain-label">What It Means</div>
+                <h3>Your Growth</h3>
+                <p>The understanding that emerges from your creative practice. What "good" means to you. How your voice has evolved. Your originality, measured.</p>
+                <div class="domain-features">
+                    <span>Originality tracking across everything you make</span>
+                    <span>Quality standards that reflect your taste</span>
+                    <span>Creative development that's visible and real</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how" id="how">
+        <div class="how-inner">
+            <h2>How Sakme works</h2>
+            <div class="how-step">
+                <div class="step-num">1</div>
+                <div>
+                    <h3>Bring your material</h3>
+                    <p>Connect your notes, research, bookmarks, and drafts. Sakme indexes what you already have — it doesn't start from zero.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">2</div>
+                <div>
+                    <h3>Create with your Alter Ego</h3>
+                    <p>Your AI collaborator learns your voice, your preferences, and your standards. It generates options. You decide what's good.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">3</div>
+                <div>
+                    <h3>Every decision teaches it</h3>
+                    <p>When you choose, reject, or refine — Sakme learns. After weeks of use, it understands what you mean when you say "make it better."</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">4</div>
+                <div>
+                    <h3>Your understanding compounds</h3>
+                    <p>Insights from one project carry into the next. Your creative memory grows. The workspace becomes genuinely yours — not a blank page every time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tiers -->
+    <section class="tiers" id="tiers">
+        <div class="tiers-inner">
+            <h2>Choose your practice</h2>
+            <p class="tiers-subtitle">Every tier includes the full workspace. Higher tiers unlock deeper capabilities.</p>
+            <div class="tier-grid">
+                <div class="tier-card">
+                    <div class="tier-name">Sense</div>
+                    <div class="tier-price">Free</div>
+                    <div class="tier-desc">
+                        The full workspace with your own AI key. All creative engines, all connectors, all export formats. Generous and real — not a trial.
+                    </div>
+                </div>
+                <div class="tier-card featured">
+                    <div class="tier-name">Making</div>
+                    <div class="tier-price">From $9/month</div>
+                    <div class="tier-desc">
+                        Hosted AI, morning reflections, health data correlation, and your Alter Ego learning from every session. The daily creative practice.
+                    </div>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-name">Meaning</div>
+                    <div class="tier-price">From $19/month</div>
+                    <div class="tier-desc">
+                        Advanced voice calibration, originality tracking, video generation, and creative development insights. For serious creative work.
+                    </div>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-name">Mastery</div>
+                    <div class="tier-price">From $39/month</div>
+                    <div class="tier-desc">
+                        Priority processing, marketplace publishing, advanced analytics, and the full depth of the self-knowing engine. For professionals.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Source -->
+    <section class="opensource">
+        <div class="opensource-inner">
+            <h2>Built on open foundations</h2>
+            <p>
+                Sakme is powered by <span class="engine-name">Seitiate</span> — an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
+            </p>
+            <a href="https://seitiate.com" class="cta-secondary">Explore Seitiate</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">Sakme</div>
+        <p>&copy; 2026 Sakme. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="mailto:hello@sakme.ai">Contact</a>
+            <a href="https://seitiate.com">Seitiate (Open Source)</a>
+        </div>
+    </footer>
+
+</body>
+</html>
