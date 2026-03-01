@@ -14,13 +14,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0c;
-            --surface: #111114;
+            --bg: #0c0b0e;
+            --surface: #13121a;
             --border: #1e1e24;
             --text: #e8e6e3;
             --text-secondary: #9a9a9f;
-            --accent-red: #c0392b;
-            --accent-green: #27ae60;
+            --accent-red: #c45c4a;
+            --accent-green: #5aac7a;
             --accent-blue: #5b7db1;
             --accent-warm: #d4a574;
         }
@@ -35,6 +35,53 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* --- Nav --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(12, 11, 14, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        nav .nav-engine {
+            padding: 0.45rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        nav .nav-engine:hover { border-color: var(--text-secondary); }
+
         /* --- Hero --- */
         .hero {
             min-height: 100vh;
@@ -43,7 +90,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 5rem 2rem 2rem;
             position: relative;
         }
 
@@ -64,16 +111,15 @@
         }
 
         .brand-img {
-            /* The image files likely have padding/backgrounds. 
-               We use mix-blend-mode to drop the background and 
-               object-fit/clip to handle sizing. */
-            height: clamp(80px, 15vw, 150px);
+            /* Sakme logo is DARK text on WHITE background.
+               invert(1) flips to white text on black background.
+               contrast(1.5) crushes any near-black to true black.
+               mix-blend-mode: screen drops black (transparent), keeps white text. */
+            height: clamp(60px, 12vw, 110px);
             width: auto;
             object-fit: contain;
+            filter: invert(1) contrast(1.5) brightness(1.1);
             mix-blend-mode: screen;
-            /* Invert if the image was generated on a white background, 
-               otherwise adjust filters as needed to get white/warm text */
-            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         .etymology {
@@ -407,11 +453,22 @@
         @media (max-width: 600px) {
             .domain-grid { grid-template-columns: 1fr; }
             .tier-grid { grid-template-columns: 1fr; }
-            .hero { padding: 2rem 1.5rem; }
+            .hero { padding: 4rem 1.5rem 2rem; }
+            nav .nav-links { gap: 0.75rem; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Nav -->
+    <nav>
+        <a href="/" class="nav-brand">Sakme</a>
+        <div class="nav-links">
+            <a href="#how">How it works</a>
+            <a href="#tiers">Pricing</a>
+            <a href="https://seitiate.com" class="nav-engine">Engine</a>
+        </div>
+    </nav>
 
     <!-- Hero -->
     <section class="hero">
@@ -548,7 +605,7 @@
         <div class="opensource-inner">
             <h2>Built on open foundations</h2>
             <p>
-                Sakme is powered by <img src="assets/seitiate_logo.png" alt="seitiate" class="engine-logo"> — an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
+                Sakme is powered by <span class="engine-name">seitiate</span> — an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
             </p>
             <a href="https://seitiate.com" class="cta-secondary">Explore Seitiate</a>
         </div>
@@ -557,7 +614,7 @@
     <!-- Footer -->
     <footer>
         <div class="footer-brand">sakme</div>
-        <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
+        <p>&copy; 2026 Sakme. All rights reserved.</p>
         <div class="footer-links">
             <a href="mailto:hello@sakme.ai">Contact</a>
             <a href="https://seitiate.com">Seitiate (Open Source)</a>
