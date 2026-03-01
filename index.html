@@ -52,10 +52,16 @@
         }
 
         nav .nav-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--text);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .nav-brand img {
+            height: 30px;
+            width: auto;
+            filter: invert(1) contrast(5);
+            mix-blend-mode: screen;
         }
 
         nav .nav-links {
@@ -113,13 +119,13 @@
         .brand-img {
             /* Sakme logo is DARK text on WHITE background.
                invert(1) flips to white text on black background.
-               contrast(5) posterizes: crushes near-black bg → pure black,
-               pushes white text → pure white.
+               contrast(10) aggressively posterizes: any near-black → pure black,
+               any near-white → pure white.
                screen blend mode drops pure black (transparent), keeps white text. */
             height: clamp(60px, 12vw, 110px);
             width: auto;
             object-fit: contain;
-            filter: invert(1) contrast(5);
+            filter: invert(1) contrast(10);
             mix-blend-mode: screen;
         }
 
@@ -463,7 +469,7 @@
 
     <!-- Nav -->
     <nav>
-        <a href="/" class="nav-brand">Sakme</a>
+        <a href="/" class="nav-brand"><img src="assets/sakme_logo.png" alt="Sakme"></a>
         <div class="nav-links">
             <a href="#how">How it works</a>
             <a href="#tiers">Pricing</a>
