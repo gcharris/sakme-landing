@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --bg-dark: #0c0b0e;
@@ -236,10 +237,23 @@
         .doc-card {
             background: var(--bg-panel);
             border: 1px solid var(--border-glass);
-            padding: 1.25rem 1.5rem;
             border-radius: var(--radius);
             display: block;
+            overflow: hidden;
+            transition: border-color 0.2s;
         }
+        .doc-card[data-doc] { cursor: pointer; }
+        .doc-card[data-doc]:hover { border-color: rgba(129, 140, 248, 0.25); }
+        .doc-card.expanded { border-color: var(--accent-dev-dim); grid-column: 1 / -1; }
+
+        .doc-card-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .doc-card-header .header-text { flex: 1; }
         .doc-card h3 {
             font-size: 1rem;
             font-weight: 600;
@@ -253,6 +267,155 @@
             margin: 0;
         }
         .doc-card-accent { border-color: var(--accent-dev-dim); }
+
+        .doc-card-chevron {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+            margin-top: 2px;
+        }
+        .doc-card.expanded .doc-card-chevron { transform: rotate(180deg); }
+
+        .doc-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .doc-card.expanded .doc-card-content { max-height: 5000px; }
+
+        .doc-card-content-inner {
+            padding: 0 1.5rem 1.5rem;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .doc-card-loading {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .doc-card-loading::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--accent-dev-dim);
+            border-top-color: var(--accent-dev);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Markdown rendered content */
+        .doc-content {
+            padding-top: 1.25rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .doc-content h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.02em;
+            -webkit-text-fill-color: var(--text-primary);
+            background: none;
+        }
+        .doc-content h1:first-child { margin-top: 0; }
+        .doc-content h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.75rem 0 0.75rem;
+            padding-bottom: 0.35rem;
+            border-bottom: 1px solid var(--border-glass);
+        }
+        .doc-content h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.5rem;
+        }
+        .doc-content h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent-dev);
+            margin: 1.25rem 0 0.5rem;
+        }
+        .doc-content p { margin-bottom: 0.75rem; }
+        .doc-content code {
+            background: rgba(129, 140, 248, 0.1);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-dev);
+        }
+        .doc-content pre {
+            background: rgba(19, 18, 26, 0.9);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+        .doc-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-secondary);
+        }
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.82rem;
+        }
+        .doc-content th {
+            background: rgba(129, 140, 248, 0.08);
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-glass);
+        }
+        .doc-content td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: top;
+        }
+        .doc-content blockquote {
+            border-left: 3px solid var(--accent-dev-dim);
+            padding: 0.5rem 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+            background: rgba(129, 140, 248, 0.04);
+            border-radius: 0 8px 8px 0;
+        }
+        .doc-content strong { color: var(--text-primary); }
+        .doc-content a {
+            color: var(--accent-dev);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .doc-content a:hover { opacity: 0.8; }
+        .doc-content hr {
+            border: none;
+            border-top: 1px solid var(--border-glass);
+            margin: 1.5rem 0;
+        }
+        .doc-content img { max-width: 100%; border-radius: 8px; }
+        .doc-content ul, .doc-content ol {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .doc-content li { margin-bottom: 0.3rem; }
 
         /* Timeline */
         .timeline {
@@ -366,6 +529,8 @@
             .grid-2 { grid-template-columns: 1fr; }
             .section { padding: 3rem 1.5rem; }
             nav .nav-links { gap: 0.75rem; }
+            .doc-content pre { font-size: 0.7rem; }
+            .doc-content table { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -481,54 +646,94 @@
 
             <!-- Architecture overview diagram -->
             <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">FRONTENDS</span>
-<span class="dim">├──</span> <span class="hl">React SPA</span> <span class="dim">──────── sakme.ai</span>
-<span class="dim">├──</span> <span class="hl">iOS / Android</span> <span class="dim">─── Capacitor (same React codebase)</span>
-<span class="dim">└──</span> <span class="hl">Telegram Bot</span> <span class="dim">──── scaffolding / notification layer</span>
-         <span class="dim">│</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">React SPA</span> <span class="dim">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; sakme.ai</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">iOS / Android</span> <span class="dim">&#9472;&#9472;&#9472; Capacitor (same React codebase)</span>
+<span class="dim">&#9492;&#9472;&#9472;</span> <span class="hl">Telegram Bot</span> <span class="dim">&#9472;&#9472;&#9472;&#9472; scaffolding / notification layer</span>
+         <span class="dim">&#9474;</span>
     <span class="gold">FastAPI (ASGI)</span>
-    <span class="dim">├──</span> CORSMiddleware
-    <span class="dim">├──</span> RequestIDMiddleware
-    <span class="dim">├──</span> TenantContextMiddleware
-    <span class="dim">├──</span> TierGate <span class="dim">(subscription enforcement)</span>
-    <span class="dim">└──</span> <span class="hl">123 API Routers</span> <span class="dim">── /api/v1/*</span>
-         <span class="dim">│</span>
-    <span class="dim">┌────┼────────┬──────────┐</span>
-    <span class="dim">▼</span>    <span class="dim">▼</span>        <span class="dim">▼</span>          <span class="dim">▼</span>
+    <span class="dim">&#9500;&#9472;&#9472;</span> CORSMiddleware
+    <span class="dim">&#9500;&#9472;&#9472;</span> RequestIDMiddleware
+    <span class="dim">&#9500;&#9472;&#9472;</span> TenantContextMiddleware
+    <span class="dim">&#9500;&#9472;&#9472;</span> TierGate <span class="dim">(subscription enforcement)</span>
+    <span class="dim">&#9492;&#9472;&#9472;</span> <span class="hl">123 API Routers</span> <span class="dim">&#9472;&#9472; /api/v1/*</span>
+         <span class="dim">&#9474;</span>
+    <span class="dim">&#9484;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;</span>
+    <span class="dim">&#9660;</span>    <span class="dim">&#9660;</span>        <span class="dim">&#9660;</span>          <span class="dim">&#9660;</span>
 <span class="hl">Services</span> <span class="hl">Graph</span>  <span class="hl">Outbox</span>   <span class="hl">Sinks</span>
 <span class="dim">(308+)</span>  <span class="dim">(Neo4j)</span> <span class="dim">(Relay)</span>   <span class="dim">(18)</span>
-    <span class="dim">│</span>    <span class="dim">│</span>        <span class="dim">│</span>          <span class="dim">│</span>
-    <span class="dim">▼</span>    <span class="dim">▼</span>        <span class="dim">▼</span>          <span class="dim">▼</span>
+    <span class="dim">&#9474;</span>    <span class="dim">&#9474;</span>        <span class="dim">&#9474;</span>          <span class="dim">&#9474;</span>
+    <span class="dim">&#9660;</span>    <span class="dim">&#9660;</span>        <span class="dim">&#9660;</span>          <span class="dim">&#9660;</span>
 <span class="green">PostgreSQL</span> <span class="green">Neo4j 5</span> <span class="green">EventStore</span> <span class="green">External</span></div>
         </section>
 
         <!-- System Inventory -->
         <section class="section">
             <h2 class="section-title">System Inventory</h2>
-            <p class="section-subtitle">What the engine contains, organized by domain.</p>
+            <p class="section-subtitle">What the engine contains, organized by domain. Click any card to read the full documentation.</p>
 
             <!-- Architecture -->
             <div class="doc-category">
                 <div class="doc-category-title">Architecture</div>
                 <div class="doc-grid">
-                    <div class="doc-card doc-card-accent">
-                        <h3>Architecture Overview</h3>
-                        <p>FastAPI backend, 308+ services, 18 output sinks, React frontend with Capacitor mobile wrapping, Telegram integration for ops</p>
+                    <div class="doc-card doc-card-accent" data-doc="architecture-overview.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Architecture Overview</h3>
+                                <p>FastAPI backend, 308+ services, 18 output sinks, React frontend with Capacitor mobile wrapping, Telegram integration for ops</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card doc-card-accent">
-                        <h3>Data Model</h3>
-                        <p>76 SQLAlchemy models organized by domain. Full enum coverage, relationship mapping, 80+ Alembic migrations with pre-flight validation gates</p>
+                    <div class="doc-card doc-card-accent" data-doc="data-model.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Data Model</h3>
+                                <p>76 SQLAlchemy models organized by domain. Full enum coverage, relationship mapping, 80+ Alembic migrations with pre-flight validation gates</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card doc-card-accent">
-                        <h3>Event Sourcing &amp; Outbox</h3>
-                        <p>Immutable event log with Transactional Outbox Pattern. OutboxRelay for async processing. HITL approval gates prevent unwanted external actions</p>
+                    <div class="doc-card doc-card-accent" data-doc="event-sourcing.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Event Sourcing &amp; Outbox</h3>
+                                <p>Immutable event log with Transactional Outbox Pattern. OutboxRelay for async processing. HITL approval gates prevent unwanted external actions</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card doc-card-accent">
-                        <h3>Multi-Tenancy</h3>
-                        <p>Row-level PostgreSQL isolation, Cypher-level Neo4j filtering, tenant context middleware. Complete data separation per creator</p>
+                    <div class="doc-card doc-card-accent" data-doc="multi-tenancy.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Multi-Tenancy</h3>
+                                <p>Row-level PostgreSQL isolation, Cypher-level Neo4j filtering, tenant context middleware. Complete data separation per creator</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card doc-card-accent">
-                        <h3>Auth System</h3>
-                        <p>Four-tier auth hierarchy (Director Key, Dev Token, Dev Stub, Firebase). Multi-provider OAuth (Google, GitHub, Telegram). BYOK API key vault</p>
+                    <div class="doc-card doc-card-accent" data-doc="auth-system.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Auth System</h3>
+                                <p>Four-tier auth hierarchy (Director Key, Dev Token, Dev Stub, Firebase). Multi-provider OAuth (Google, GitHub, Telegram). BYOK API key vault</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card doc-card-accent" data-doc="configuration.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Configuration</h3>
+                                <p>Pydantic Settings with environment variable binding. Feature flags, provider selection, deployment configuration across environments</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
@@ -537,37 +742,85 @@
             <div class="doc-category">
                 <div class="doc-category-title">Core Creative Systems</div>
                 <div class="doc-grid">
-                    <div class="doc-card">
-                        <h3>Learning Engine</h3>
-                        <p>How sources become ingredients: interview sessions, multi-source extraction pipeline, story bible generation with character/world/theme decomposition</p>
+                    <div class="doc-card" data-doc="learning-engine.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Learning Engine</h3>
+                                <p>How sources become ingredients: interview sessions, multi-source extraction pipeline, story bible generation with character/world/theme decomposition</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Knowledge Graph</h3>
-                        <p>Neo4j integration with GraphRAG queries. Entity relationships, Flash-to-Foundry triplet seeding from NotebookLM, contradiction detection</p>
+                    <div class="doc-card" data-doc="knowledge-graph.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Knowledge Graph</h3>
+                                <p>Neo4j integration with GraphRAG queries. Entity relationships, Flash-to-Foundry triplet seeding from NotebookLM, contradiction detection</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Sovereign Codex</h3>
-                        <p>Three-layer knowledge stack: Sovereign (director-blessed) &gt; Project (local overrides) &gt; External (imported). Crystallization promotes raw material with blessing scores</p>
+                    <div class="doc-card" data-doc="sovereign-codex.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Sovereign Codex</h3>
+                                <p>Three-layer knowledge stack: Sovereign (director-blessed) &gt; Project (local overrides) &gt; External (imported). Crystallization promotes raw material with blessing scores</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Voice Calibration</h3>
-                        <p>Tournament-based voice learning. Temperature strategies across [0.7, 0.9] range. VoiceProfile generation per character. Multi-character ensemble calibration</p>
+                    <div class="doc-card" data-doc="voice-calibration.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Voice Calibration</h3>
+                                <p>Tournament-based voice learning. Temperature strategies across [0.7, 0.9] range. VoiceProfile generation per character. Multi-character ensemble calibration</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Narrative Governor</h3>
-                        <p>Deterministic kill switches (Arc Wholeness, Character Integration, Setup-Payoff Distance). N1-N5 violation taxonomy with severity routing. ORA enforcement loop</p>
+                    <div class="doc-card" data-doc="narrative-governor.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Narrative Governor</h3>
+                                <p>Deterministic kill switches (Arc Wholeness, Character Integration, Setup-Payoff Distance). N1-N5 violation taxonomy with severity routing. ORA enforcement loop</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Society of Thought</h3>
-                        <p>Tournament architecture based on Kim et al. research. Multi-variant generation, consensus voting, wildcard injection (Move 37). Empirically validated: 40% peak capture rate</p>
+                    <div class="doc-card" data-doc="society-of-thought.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Society of Thought</h3>
+                                <p>Tournament architecture based on Kim et al. research. Multi-variant generation, consensus voting, wildcard injection (Move 37). Empirically validated: 40% peak capture rate</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Creative Refinement Loop</h3>
-                        <p>Protocol-based generate-critique-revise cycle. Any Generator + Critic pair plugs in via structural subtyping. Convergence config with per-dimension thresholds</p>
+                    <div class="doc-card" data-doc="creative-refinement.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Creative Refinement Loop</h3>
+                                <p>Protocol-based generate-critique-revise cycle. Any Generator + Critic pair plugs in via structural subtyping. Convergence config with per-dimension thresholds</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Creator Development Engine</h3>
-                        <p>19 decision event types across 5 services. Growth edge detection, provenance scoring, the Mirror (creative self-reflection). Tracks how creators develop over time</p>
+                    <div class="doc-card" data-doc="creator-development-engine.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Creator Development Engine</h3>
+                                <p>19 decision event types across 5 services. Growth edge detection, provenance scoring, the Mirror. Tracks how creators develop over time</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
@@ -576,17 +829,45 @@
             <div class="doc-category">
                 <div class="doc-category-title">Agent &amp; Routing</div>
                 <div class="doc-grid">
-                    <div class="doc-card">
-                        <h3>Agentic Loop</h3>
-                        <p>Multi-tool loop runtime with retries, context compaction, fallback strategies, and streaming events. Two-agent architecture: Director + User agents with distinct souls</p>
+                    <div class="doc-card" data-doc="agentic-loop.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Agentic Loop</h3>
+                                <p>Multi-tool loop runtime with retries, context compaction, fallback strategies, and streaming events. Two-agent architecture: Director + User agents with distinct souls</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Prompt Assembler</h3>
-                        <p>Three-layer system prompt builder: Soul (identity) + State (pipeline context) + Policy (tool rules). Model-agnostic output works with Gemini, Claude, GPT via BYOK</p>
+                    <div class="doc-card" data-doc="inbox-router.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Inbox Router</h3>
+                                <p>Routes incoming content to the right engine/pipeline based on content type. Triage classification for files, emails, and external inputs</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Pipeline Context Builder</h3>
-                        <p>Assembles full pipeline state per tenant per turn (10 parallel DB queries, ~50ms). Stage detection from ONBOARDING through EXPORT. Agent always knows where you are</p>
+                    <div class="doc-card" data-doc="chat-surfaces.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Chat Surfaces</h3>
+                                <p>Multi-surface agent routing: Telegram, web chat, API. Shared service layer ensures consistent behavior across all surfaces</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="url-intelligence.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>URL Intelligence</h3>
+                                <p>Three-mode URL analysis: tenant insights, director memos, and triage. Analyzes URLs against project context and architecture</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
@@ -595,63 +876,196 @@
             <div class="doc-category">
                 <div class="doc-category-title">Infrastructure</div>
                 <div class="doc-grid">
-                    <div class="doc-card">
-                        <h3>Testing</h3>
-                        <p>310+ test files, ~2,650 tests. MockLLMClient for deterministic testing, async fixtures, focused domain testing. Merge gates enforce compilation + test + type checks</p>
+                    <div class="doc-card" data-doc="testing.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Testing</h3>
+                                <p>310+ test files, ~2,650 tests. MockLLMClient for deterministic testing, async fixtures, focused domain testing. Merge gates enforce compilation + test + type checks</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Deployment</h3>
-                        <p>Cloud Run on GCP. Dockerized backend with GitHub Actions CI/CD. Firebase Hosting for frontend. Autonomous deployment runbook with migration pre-flight gates</p>
+                    <div class="doc-card" data-doc="deployment.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Deployment</h3>
+                                <p>Cloud Run on GCP. Dockerized backend with GitHub Actions CI/CD. Firebase Hosting for frontend. Autonomous deployment runbook with migration pre-flight gates</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>BYOK Architecture</h3>
-                        <p>Bring Your Own Key model. Users supply their own LLM API keys. Platform provides the intelligence layer (soul + state + policy). BudgetOrchestrator with credit ledger</p>
+                    <div class="doc-card" data-doc="byok-model.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>BYOK Architecture</h3>
+                                <p>Bring Your Own Key model. Users supply their own LLM API keys. Platform provides the intelligence layer (soul + state + policy). BudgetOrchestrator with credit ledger</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Billing Infrastructure</h3>
-                        <p>Provider-agnostic BillingService interface. Paddle adapter live. Add any provider by implementing one ~150 LOC adapter. TierGate middleware enforces subscription levels</p>
+                    <div class="doc-card" data-doc="scheduler.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Scheduler &amp; Health</h3>
+                                <p>APScheduler with PostgreSQL job store for persistence. Daily health checks (DB + Neo4j + LLM providers). Weekly summary aggregation. Telegram alerts on failure</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Scheduler &amp; Health</h3>
-                        <p>APScheduler with PostgreSQL job store for persistence. Daily health checks (DB + Neo4j + LLM providers). Weekly summary aggregation. Telegram alerts on failure</p>
-                    </div>
-                    <div class="doc-card">
-                        <h3>Video Pipeline</h3>
-                        <p>5 video generation sinks (Higgsfield, Kling, Veo, Moltbook, Aggregator). SinkRouter for provider selection. Shot planning, tournament scoring, Vertex AI audio isolation</p>
+                    <div class="doc-card" data-doc="telegram-integration.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Telegram Integration</h3>
+                                <p>Scaffolding and notification layer. Slash commands for ops, video handlers, agent chat routing. Will narrow to pager channel once native app ships</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Inventories -->
+            <!-- Capabilities & Scale -->
             <div class="doc-category">
                 <div class="doc-category-title">Capabilities &amp; Scale</div>
                 <div class="doc-grid">
-                    <div class="doc-card">
-                        <h3>Source Connectors</h3>
-                        <p>15+ input connectors: Google (Gmail, Drive, YouTube, Photos), Pinterest, NotebookLM, Readwise, Obsidian, Logseq, RSS, manual upload. OAuth-based, connect-don't-upload</p>
+                    <div class="doc-card" data-doc="capabilities-inventory.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Capabilities Inventory</h3>
+                                <p>Complete inventory of paid-app layer capabilities: connectors, creative pipeline, knowledge management, governance, video, and creator development</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Output Sinks</h3>
-                        <p>18 output destinations: video (5 providers), text (Medium, Substack, KDP), audio (ElevenLabs), social (Telegram, WhatsApp, Discord), export (JSON, PDF)</p>
+                    <div class="doc-card" data-doc="skills-inventory.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Skills Inventory</h3>
+                                <p>Complete inventory of implemented and specced skills. Onboarding, knowledge management, health/identity data, operations, infrastructure services</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Creative Formats</h3>
-                        <p>8 format pipelines: Memoir, Novel, Screenplay, TikTok Series, Birthday Video, Comic, Audiobook, Newsletter. YAML-defined frameworks with NSL beat structures</p>
+                    <div class="doc-card" data-doc="skills-and-tools-built.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Skills, Tools &amp; Connectors Built</h3>
+                                <p>90+ user-facing capabilities: 8 skills, 7 agent tools, 30+ connectors, 16 sinks, 5 cron jobs, 19+ creative pipeline services</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="backend-ready-for-conversion.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Backend Ready for Conversion</h3>
+                                <p>Analysis of backend services ready for frontend wiring. What's built vs what's exposed. Conversion readiness assessment</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="planned-skills-and-connectors.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Planned Skills &amp; Connectors</h3>
+                                <p>Prioritized roadmap: launch-day must-haves, month-1 should-haves, marketplace seeds, community candidates. ~2,290 LOC launch-critical</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Governance -->
+            <!-- Extension Guides -->
+            <div class="doc-category">
+                <div class="doc-category-title">Extension Guides</div>
+                <div class="doc-grid">
+                    <div class="doc-card" data-doc="adding-a-format.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Adding a Format</h3>
+                                <p>Step-by-step guide to adding a new creative format (YAML framework definition, format registry, structure adapter wiring)</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="adding-a-sink.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Adding a Sink</h3>
+                                <p>How to add a new output destination. BaseSink interface, publish method, authentication, error handling patterns</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="adding-a-source.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Adding a Source</h3>
+                                <p>How to add a new data connector. Index-Crystallize-Codex pipeline, OAuth patterns, SourceIndex model, content hashing</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="adding-a-skill.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Adding a Skill</h3>
+                                <p>How to add a new skill/talent. Code-registered vs SKILL.md-based agentic skills. Registry, executor, governance wiring</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Governance & Policy -->
             <div class="doc-category">
                 <div class="doc-category-title">Governance &amp; Policy</div>
                 <div class="doc-grid">
-                    <div class="doc-card">
-                        <h3>Creator Agency Doctrine</h3>
-                        <p>Decision rights framework: Suggest / Draft / Execute / Publish. Agency profiles per subscription tier. 5 minimum tenant guarantees including undo-always-available</p>
+                    <div class="doc-card" data-doc="skill-write-boundaries.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Skill Write Boundaries</h3>
+                                <p>ECS-inspired service ownership. Each service has defined write boundaries to prevent sprawl. Merge gates enforce. Anti-pattern detection for cross-boundary writes</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
-                    <div class="doc-card">
-                        <h3>Skill Write Boundaries</h3>
-                        <p>ECS-inspired service ownership. Each service has defined write boundaries to prevent sprawl. Merge gates enforce. Anti-pattern detection for cross-boundary writes</p>
+                    <div class="doc-card" data-doc="messaging-guardrails.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Messaging Guardrails</h3>
+                                <p>User-facing language rules. What to say vs what not to say. Internal terminology mapping to Body/Mind/Spirit framework</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
+                    </div>
+                    <div class="doc-card" data-doc="upstream-sync-policy.md">
+                        <div class="doc-card-header">
+                            <div class="header-text">
+                                <h3>Upstream Sync Policy</h3>
+                                <p>How the system ingests changes from external code repositories. Sync cadence, intake rules, required gates, traceability, rollback strategy</p>
+                            </div>
+                            <svg class="doc-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        <div class="doc-card-content"><div class="doc-card-content-inner"></div></div>
                     </div>
                 </div>
             </div>
@@ -700,28 +1114,28 @@
             <h2 class="section-title">Repository Structure</h2>
             <p class="section-subtitle">Backend + frontend codebase layout.</p>
             <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">backend/</span>
-<span class="dim">├──</span> <span class="hl">app/</span>
-<span class="dim">│   ├──</span> <span class="hl">api/v1/</span>          <span class="dim">123 FastAPI routers</span>
-<span class="dim">│   ├──</span> <span class="hl">core/</span>            <span class="dim">Config, database, security, vault</span>
-<span class="dim">│   ├──</span> <span class="hl">models/</span>          <span class="dim">76 SQLAlchemy models</span>
-<span class="dim">│   ├──</span> <span class="hl">schemas/</span>         <span class="dim">50+ Pydantic schemas</span>
-<span class="dim">│   ├──</span> <span class="hl">services/</span>        <span class="dim">308+ business logic services</span>
-<span class="dim">│   ├──</span> <span class="hl">sinks/</span>           <span class="dim">18 output destinations</span>
-<span class="dim">│   ├──</span> <span class="hl">graph/</span>           <span class="dim">Neo4j client + tenant isolation</span>
-<span class="dim">│   ├──</span> <span class="hl">middleware/</span>      <span class="dim">TenantContext, TierGate, RequestID</span>
-<span class="dim">│   ├──</span> <span class="hl">data/</span>            <span class="dim">YAML configs (formats, frameworks, NSL)</span>
-<span class="dim">│   └──</span> <span class="hl">migrations/</span>      <span class="dim">80+ Alembic migrations</span>
-<span class="dim">├──</span> <span class="hl">tests/</span>              <span class="dim">310+ test files, ~2,650 tests</span>
-<span class="dim">├──</span> Dockerfile           <span class="dim">Production container (Cloud Run)</span>
-<span class="dim">├──</span> Dockerfile.audio     <span class="dim">Demucs/PyTorch (Vertex AI Custom Jobs)</span>
-<span class="dim">└──</span> entrypoint.sh        <span class="dim">Cloud Run startup + migrations</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">app/</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">api/v1/</span>          <span class="dim">123 FastAPI routers</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">core/</span>            <span class="dim">Config, database, security, vault</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">models/</span>          <span class="dim">76 SQLAlchemy models</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">schemas/</span>         <span class="dim">50+ Pydantic schemas</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">services/</span>        <span class="dim">308+ business logic services</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">sinks/</span>           <span class="dim">18 output destinations</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">graph/</span>           <span class="dim">Neo4j client + tenant isolation</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">middleware/</span>      <span class="dim">TenantContext, TierGate, RequestID</span>
+<span class="dim">&#9474;   &#9500;&#9472;&#9472;</span> <span class="hl">data/</span>            <span class="dim">YAML configs (formats, frameworks, NSL)</span>
+<span class="dim">&#9474;   &#9492;&#9472;&#9472;</span> <span class="hl">migrations/</span>      <span class="dim">80+ Alembic migrations</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">tests/</span>              <span class="dim">310+ test files, ~2,650 tests</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> Dockerfile           <span class="dim">Production container (Cloud Run)</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> Dockerfile.audio     <span class="dim">Demucs/PyTorch (Vertex AI Custom Jobs)</span>
+<span class="dim">&#9492;&#9472;&#9472;</span> entrypoint.sh        <span class="dim">Cloud Run startup + migrations</span>
 
 <span class="gold">frontend/src/</span>
-<span class="dim">├──</span> <span class="hl">pages/</span>              <span class="dim">18 route-level components</span>
-<span class="dim">├──</span> <span class="hl">components/</span>         <span class="dim">186 React components</span>
-<span class="dim">├──</span> <span class="hl">hooks/</span>              <span class="dim">14 custom hooks</span>
-<span class="dim">├──</span> <span class="hl">api/</span>                <span class="dim">API client layer</span>
-<span class="dim">└──</span> <span class="hl">stores/</span>             <span class="dim">Auth context, UI state</span></div>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">pages/</span>              <span class="dim">18 route-level components</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">components/</span>         <span class="dim">186 React components</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">hooks/</span>              <span class="dim">14 custom hooks</span>
+<span class="dim">&#9500;&#9472;&#9472;</span> <span class="hl">api/</span>                <span class="dim">API client layer</span>
+<span class="dim">&#9492;&#9472;&#9472;</span> <span class="hl">stores/</span>             <span class="dim">Auth context, UI state</span></div>
         </section>
     </main>
 
@@ -735,5 +1149,59 @@
         </div>
         <p class="version">Confidential &mdash; March 2026</p>
     </footer>
+
+    <script>
+        // Configure marked
+        marked.setOptions({ gfm: true, breaks: false });
+
+        // Cache for loaded docs
+        const docCache = {};
+
+        // Handle card clicks
+        document.querySelectorAll('.doc-card[data-doc]').forEach(card => {
+            card.addEventListener('click', async function(e) {
+                // Don't trigger if clicking a link inside expanded content
+                if (e.target.closest('.doc-card-content-inner a')) return;
+
+                const docFile = this.dataset.doc;
+                const contentInner = this.querySelector('.doc-card-content-inner');
+                const isExpanded = this.classList.contains('expanded');
+
+                // Collapse if already expanded
+                if (isExpanded) {
+                    this.classList.remove('expanded');
+                    return;
+                }
+
+                // Collapse any other expanded cards in same grid
+                const grid = this.closest('.doc-grid');
+                grid.querySelectorAll('.doc-card.expanded').forEach(other => {
+                    other.classList.remove('expanded');
+                });
+
+                // Load content if not cached
+                if (!docCache[docFile]) {
+                    contentInner.innerHTML = '<div class="doc-card-loading">Loading documentation</div>';
+                    this.classList.add('expanded');
+                    try {
+                        const resp = await fetch('dev-docs/' + docFile);
+                        if (!resp.ok) throw new Error('Not found');
+                        const md = await resp.text();
+                        docCache[docFile] = marked.parse(md);
+                    } catch (err) {
+                        docCache[docFile] = '<p style="color: var(--text-secondary);">Documentation file not available.</p>';
+                    }
+                }
+
+                contentInner.innerHTML = '<div class="doc-content">' + docCache[docFile] + '</div>';
+                this.classList.add('expanded');
+
+                // Scroll into view after a brief delay for the transition
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            });
+        });
+    </script>
 </body>
 </html>
