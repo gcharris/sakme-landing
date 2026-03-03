@@ -1157,6 +1157,12 @@
         // Cache for loaded docs
         const docCache = {};
 
+        // Add anchor IDs to all cards for deep linking
+        document.querySelectorAll('.doc-card[data-doc]').forEach(card => {
+            const slug = card.dataset.doc.replace('.md', '');
+            card.id = slug;
+        });
+
         // Handle card clicks
         document.querySelectorAll('.doc-card[data-doc]').forEach(card => {
             card.addEventListener('click', async function(e) {
@@ -1202,6 +1208,19 @@
                 }, 100);
             });
         });
+
+        // Deep link: auto-expand card from URL hash (e.g. #sovereign-codex)
+        function openFromHash() {
+            const hash = location.hash.replace('#', '');
+            if (!hash) return;
+            const card = document.getElementById(hash);
+            if (card && !card.classList.contains('expanded')) {
+                card.click();
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+            }
+        }
+        openFromHash();
+        window.addEventListener('hashchange', openFromHash);
     </script>
 </body>
 </html>
