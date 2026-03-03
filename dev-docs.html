@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sakme | Developer Documentation</title>
-    <meta name="description" content="Technical documentation for developers evaluating, contributing to, or forking Context Engine Studio.">
+    <title>Sakme | Technical Architecture</title>
+    <meta name="description" content="Technical architecture overview of the Context Engine powering Sakme.">
     <meta name="robots" content="noindex, nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +126,7 @@
             font-size: 1.15rem;
             color: var(--text-secondary);
             margin-bottom: 2.5rem;
-            max-width: 560px;
+            max-width: 620px;
             line-height: 1.7;
         }
 
@@ -238,13 +238,7 @@
             border: 1px solid var(--border-glass);
             padding: 1.25rem 1.5rem;
             border-radius: var(--radius);
-            transition: transform 0.2s, border-color 0.2s;
-            text-decoration: none;
             display: block;
-        }
-        .doc-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-dev-dim);
         }
         .doc-card h3 {
             font-size: 1rem;
@@ -258,46 +252,57 @@
             line-height: 1.5;
             margin: 0;
         }
-        .doc-card .doc-file {
-            font-size: 0.7rem;
-            font-family: 'Courier New', monospace;
-            color: var(--accent-dev);
-            opacity: 0.7;
-            margin-top: 0.5rem;
-        }
         .doc-card-accent { border-color: var(--accent-dev-dim); }
 
-        /* Quick start box */
-        .quickstart {
-            background: var(--bg-panel);
-            border: 1px solid var(--accent-dev-dim);
-            border-radius: var(--radius);
-            padding: 2rem;
+        /* Timeline */
+        .timeline {
             max-width: 740px;
             margin: 0 auto 3rem;
+            position: relative;
+            padding-left: 2rem;
         }
-        .quickstart h3 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-dev), var(--accent-dev-dim), transparent);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.25rem;
+            padding-left: 1.25rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.45rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-dev);
+            border: 2px solid var(--bg-dark);
+        }
+        .timeline-date {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-dev);
+            letter-spacing: 0.02em;
+        }
+        .timeline-title {
+            font-size: 0.95rem;
+            font-weight: 600;
             color: var(--text-primary);
+            margin-top: 0.15rem;
         }
-        .quickstart code {
-            display: block;
-            background: rgba(10, 10, 10, 0.6);
-            border: 1px solid var(--border-glass);
-            border-radius: 6px;
-            padding: 1rem 1.25rem;
-            font-family: 'Courier New', monospace;
+        .timeline-detail {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            line-height: 1.8;
-            overflow-x: auto;
-            white-space: pre;
-            margin-bottom: 0.75rem;
+            margin-top: 0.1rem;
         }
-        .quickstart code .comment { color: #6b7280; }
-        .quickstart code .cmd { color: var(--accent-dev); }
-        .quickstart code .path { color: var(--accent-warm); }
 
         /* Architecture diagram */
         .diagram {
@@ -370,22 +375,25 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="https://seitiate.com">Seitiate</a>
-            <a href="https://github.com/gcharris/context-engine-studio" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
     </nav>
 
     <main>
         <section class="hero-dev">
             <div class="private-notice">
-                This is a private document for development partners. Please do not share publicly.
+                This is a confidential document for technical partners. Please do not share publicly.
             </div>
-            <div class="hero-badge">DEVELOPER DOCUMENTATION</div>
+            <div class="hero-badge">TECHNICAL ARCHITECTURE</div>
             <h1>Context Engine <span class="dev-gradient">Studio</span></h1>
             <p class="sub-text">
-                Technical documentation for developers evaluating, contributing to, or forking CES.
-                A multi-tenant FastAPI + PostgreSQL + Neo4j backend with a React frontend.
+                A technical overview of the Context Engine powering Sakme &mdash;
+                175K+ lines of production code, built in 8 weeks by one engineer with AI agents.
             </p>
             <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-num">175K+</div>
+                    <div class="stat-label">Lines of Code</div>
+                </div>
                 <div class="stat-item">
                     <div class="stat-num">308+</div>
                     <div class="stat-label">Services</div>
@@ -404,43 +412,84 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-num">18</div>
-                    <div class="stat-label">Sinks</div>
+                    <div class="stat-label">Output Sinks</div>
                 </div>
             </div>
         </section>
 
-        <!-- Quick Start -->
+        <!-- Engineering Velocity Timeline -->
         <section class="section">
-            <div class="quickstart">
-                <h3>Quick Start</h3>
-                <code><span class="comment"># Clone and install</span>
-<span class="cmd">git clone</span> git@github.com:gcharris/context-engine-studio.git
-<span class="cmd">cd</span> <span class="path">context-engine-studio/backend</span>
-<span class="cmd">pip install</span> -r requirements.txt
-
-<span class="comment"># Set minimum config</span>
-<span class="cmd">export</span> CES_DATABASE_URL=<span class="path">postgresql+asyncpg://user:pass@localhost/ces</span>
-<span class="cmd">export</span> CES_USE_MOCK_LLM=<span class="path">true</span>
-<span class="cmd">export</span> CES_ALLOW_DEV_AUTH=<span class="path">true</span>
-
-<span class="comment"># Run migrations and start</span>
-<span class="cmd">alembic</span> upgrade head
-<span class="cmd">uvicorn</span> app.main:app --reload</code>
-                <p style="font-size: 0.85rem; color: var(--text-secondary);">
-                    See <strong>configuration.md</strong> for all 350+ environment variables.
-                    See <strong>auth-system.md</strong> for the dev auth bypass.
-                </p>
+            <h2 class="section-title">Engineering Velocity</h2>
+            <p class="section-subtitle">From zero to production in 8 weeks. One engineer, multi-agent AI workflow.</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 27</div>
+                    <div class="timeline-title">Foundations + Learning Engine</div>
+                    <div class="timeline-detail">FastAPI, PostgreSQL, Neo4j, event sourcing, interview pipeline, story bible generation</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Jan 31</div>
+                    <div class="timeline-title">Voice Calibration + Narrative Governor</div>
+                    <div class="timeline-detail">Tournament-based voice learning, N1-N5 violation taxonomy, ORA enforcement loop</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 1</div>
+                    <div class="timeline-title">Flash-to-Foundry Architecture</div>
+                    <div class="timeline-detail">NotebookLM hybrid pipeline, triplet seeding, anchor-guided extraction</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 6</div>
+                    <div class="timeline-title">Sovereign Codex + Cloud Run Deploy</div>
+                    <div class="timeline-detail">Three-layer knowledge stack (Sovereign/Project/External), crystallization, graduation. Production on GCP.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 8</div>
+                    <div class="timeline-title">Full Video Pipeline</div>
+                    <div class="timeline-detail">5 video sinks (Higgsfield, Kling, Veo, Moltbook, Aggregator), tournament scoring, Telegram handlers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 11</div>
+                    <div class="timeline-title">10-Turn Onboarding Funnel</div>
+                    <div class="timeline-detail">Format Selection &rarr; Source Discovery &rarr; Brainstorm &rarr; Bookends &rarr; Engagement Gate &rarr; Conversion</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 12</div>
+                    <div class="timeline-title">Billing + Creative Refinement Loop</div>
+                    <div class="timeline-detail">Provider-agnostic billing (Paddle adapter), protocol-based critic/generator refinement, identity lock</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 14</div>
+                    <div class="timeline-title">Creator Development Engine</div>
+                    <div class="timeline-detail">4 phases in one day. Decision events, growth edges, provenance scoring, the Mirror. Unicorn differentiator.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 19</div>
+                    <div class="timeline-title">Distribution Architecture Decided</div>
+                    <div class="timeline-detail">Open-core split: Seitiate (AGPL engine) + Sakme (paid product). Capacitor mobile strategy. Three subscription tiers.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 22</div>
+                    <div class="timeline-title">ECS Discovery + Governance</div>
+                    <div class="timeline-detail">Talent Taxonomy revealed as Entity Component System. Director Agency methodology. Creator agency doctrine.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Mar 1</div>
+                    <div class="timeline-title">OS Primitives + Landing Pages</div>
+                    <div class="timeline-detail">9 operating system primitives shipped. Seitiate + Sakme live. Trademark filing. 751 Python files, 495 TS/TSX.</div>
+                </div>
             </div>
 
             <!-- Architecture overview diagram -->
             <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">FRONTENDS</span>
 <span class="dim">├──</span> <span class="hl">React SPA</span> <span class="dim">──────── sakme.ai</span>
-<span class="dim">└──</span> <span class="hl">Telegram Bot</span> <span class="dim">──── @AgentC_Agency_bot</span>
+<span class="dim">├──</span> <span class="hl">iOS / Android</span> <span class="dim">─── Capacitor (same React codebase)</span>
+<span class="dim">└──</span> <span class="hl">Telegram Bot</span> <span class="dim">──── scaffolding / notification layer</span>
          <span class="dim">│</span>
     <span class="gold">FastAPI (ASGI)</span>
     <span class="dim">├──</span> CORSMiddleware
     <span class="dim">├──</span> RequestIDMiddleware
     <span class="dim">├──</span> TenantContextMiddleware
+    <span class="dim">├──</span> TierGate <span class="dim">(subscription enforcement)</span>
     <span class="dim">└──</span> <span class="hl">123 API Routers</span> <span class="dim">── /api/v1/*</span>
          <span class="dim">│</span>
     <span class="dim">┌────┼────────┬──────────┐</span>
@@ -452,83 +501,74 @@
 <span class="green">PostgreSQL</span> <span class="green">Neo4j 5</span> <span class="green">EventStore</span> <span class="green">External</span></div>
         </section>
 
-        <!-- Architecture -->
+        <!-- System Inventory -->
         <section class="section">
+            <h2 class="section-title">System Inventory</h2>
+            <p class="section-subtitle">What the engine contains, organized by domain.</p>
+
+            <!-- Architecture -->
             <div class="doc-category">
                 <div class="doc-category-title">Architecture</div>
                 <div class="doc-grid">
-                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/architecture-overview.md" target="_blank" rel="noopener noreferrer">
+                    <div class="doc-card doc-card-accent">
                         <h3>Architecture Overview</h3>
-                        <p>Complete system architecture: FastAPI backend, 308+ services, 18 sinks, React frontend, Telegram integration</p>
-                        <div class="doc-file">architecture-overview.md</div>
-                    </a>
-                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/data-model.md" target="_blank" rel="noopener noreferrer">
+                        <p>FastAPI backend, 308+ services, 18 output sinks, React frontend with Capacitor mobile wrapping, Telegram integration for ops</p>
+                    </div>
+                    <div class="doc-card doc-card-accent">
                         <h3>Data Model</h3>
-                        <p>76 SQLAlchemy models organized by domain, enums, relationships, and 80 Alembic migrations</p>
-                        <div class="doc-file">data-model.md</div>
-                    </a>
-                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/event-sourcing.md" target="_blank" rel="noopener noreferrer">
+                        <p>76 SQLAlchemy models organized by domain. Full enum coverage, relationship mapping, 80+ Alembic migrations with pre-flight validation gates</p>
+                    </div>
+                    <div class="doc-card doc-card-accent">
                         <h3>Event Sourcing &amp; Outbox</h3>
-                        <p>Immutable event log, Transactional Outbox Pattern, OutboxRelay, HITL approval gates</p>
-                        <div class="doc-file">event-sourcing.md</div>
-                    </a>
-                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/multi-tenancy.md" target="_blank" rel="noopener noreferrer">
+                        <p>Immutable event log with Transactional Outbox Pattern. OutboxRelay for async processing. HITL approval gates prevent unwanted external actions</p>
+                    </div>
+                    <div class="doc-card doc-card-accent">
                         <h3>Multi-Tenancy</h3>
-                        <p>Schema-per-tenant PostgreSQL, Cypher-level Neo4j filtering, tenant context middleware</p>
-                        <div class="doc-file">multi-tenancy.md</div>
-                    </a>
-                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/auth-system.md" target="_blank" rel="noopener noreferrer">
+                        <p>Row-level PostgreSQL isolation, Cypher-level Neo4j filtering, tenant context middleware. Complete data separation per creator</p>
+                    </div>
+                    <div class="doc-card doc-card-accent">
                         <h3>Auth System</h3>
-                        <p>Four-tier hierarchy (Director Key, Dev Token, Dev Stub, Firebase), OAuth providers, BYOK vault</p>
-                        <div class="doc-file">auth-system.md</div>
-                    </a>
+                        <p>Four-tier auth hierarchy (Director Key, Dev Token, Dev Stub, Firebase). Multi-provider OAuth (Google, GitHub, Telegram). BYOK API key vault</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Core Systems -->
+            <!-- Core Creative Systems -->
             <div class="doc-category">
                 <div class="doc-category-title">Core Creative Systems</div>
                 <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/learning-engine.md" target="_blank" rel="noopener noreferrer">
+                    <div class="doc-card">
                         <h3>Learning Engine</h3>
-                        <p>How sources become ingredients: interview sessions, extraction pipeline, story bible generation</p>
-                        <div class="doc-file">learning-engine.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/knowledge-graph.md" target="_blank" rel="noopener noreferrer">
+                        <p>How sources become ingredients: interview sessions, multi-source extraction pipeline, story bible generation with character/world/theme decomposition</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Knowledge Graph</h3>
-                        <p>Neo4j integration, GraphRAG queries, entity relationships, Flash-to-Foundry triplet seeding</p>
-                        <div class="doc-file">knowledge-graph.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/sovereign-codex.md" target="_blank" rel="noopener noreferrer">
+                        <p>Neo4j integration with GraphRAG queries. Entity relationships, Flash-to-Foundry triplet seeding from NotebookLM, contradiction detection</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Sovereign Codex</h3>
-                        <p>Three-layer knowledge stack (Sovereign/Project/External), crystallization, trust tiers, graduation</p>
-                        <div class="doc-file">sovereign-codex.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/voice-calibration.md" target="_blank" rel="noopener noreferrer">
+                        <p>Three-layer knowledge stack: Sovereign (director-blessed) &gt; Project (local overrides) &gt; External (imported). Crystallization promotes raw material with blessing scores</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Voice Calibration</h3>
-                        <p>Tournament-based voice learning, temperature strategies, VoiceProfile generation, multi-character</p>
-                        <div class="doc-file">voice-calibration.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/narrative-governor.md" target="_blank" rel="noopener noreferrer">
+                        <p>Tournament-based voice learning. Temperature strategies across [0.7, 0.9] range. VoiceProfile generation per character. Multi-character ensemble calibration</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Narrative Governor</h3>
-                        <p>Kill switches, N1-N5 violation taxonomy, ORA loop, HATI protocol adaptation</p>
-                        <div class="doc-file">narrative-governor.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/society-of-thought.md" target="_blank" rel="noopener noreferrer">
+                        <p>Deterministic kill switches (Arc Wholeness, Character Integration, Setup-Payoff Distance). N1-N5 violation taxonomy with severity routing. ORA enforcement loop</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Society of Thought</h3>
-                        <p>Tournament architecture, variant generation, consensus voting, wildcard injection</p>
-                        <div class="doc-file">society-of-thought.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/creative-refinement.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Creative Refinement</h3>
-                        <p>Protocol-based generate-critique-revise loop, critic/generator pairs, convergence config</p>
-                        <div class="doc-file">creative-refinement.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/creator-development-engine.md" target="_blank" rel="noopener noreferrer">
+                        <p>Tournament architecture based on Kim et al. research. Multi-variant generation, consensus voting, wildcard injection (Move 37). Empirically validated: 40% peak capture rate</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Creative Refinement Loop</h3>
+                        <p>Protocol-based generate-critique-revise cycle. Any Generator + Critic pair plugs in via structural subtyping. Convergence config with per-dimension thresholds</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Creator Development Engine</h3>
-                        <p>Decision events, creator profiles, growth edges, provenance scoring, the Mirror</p>
-                        <div class="doc-file">creator-development-engine.md</div>
-                    </a>
+                        <p>19 decision event types across 5 services. Growth edge detection, provenance scoring, the Mirror (creative self-reflection). Tracks how creators develop over time</p>
+                    </div>
                 </div>
             </div>
 
@@ -536,21 +576,18 @@
             <div class="doc-category">
                 <div class="doc-category-title">Agent &amp; Routing</div>
                 <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/agentic-loop.md" target="_blank" rel="noopener noreferrer">
+                    <div class="doc-card">
                         <h3>Agentic Loop</h3>
-                        <p>Multi-tool loop runtime, retries, compaction, fallback, streaming events</p>
-                        <div class="doc-file">agentic-loop.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/url-intelligence.md" target="_blank" rel="noopener noreferrer">
-                        <h3>URL Intelligence</h3>
-                        <p>URL insight/memo/triage skill behavior and API routes</p>
-                        <div class="doc-file">url-intelligence.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/inbox-router.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Inbox Router</h3>
-                        <p>File classification and routing behavior</p>
-                        <div class="doc-file">inbox-router.md</div>
-                    </a>
+                        <p>Multi-tool loop runtime with retries, context compaction, fallback strategies, and streaming events. Two-agent architecture: Director + User agents with distinct souls</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Prompt Assembler</h3>
+                        <p>Three-layer system prompt builder: Soul (identity) + State (pipeline context) + Policy (tool rules). Model-agnostic output works with Gemini, Claude, GPT via BYOK</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Pipeline Context Builder</h3>
+                        <p>Assembles full pipeline state per tenant per turn (10 parallel DB queries, ~50ms). Stage detection from ONBOARDING through EXPORT. Agent always knows where you are</p>
+                    </div>
                 </div>
             </div>
 
@@ -558,90 +595,49 @@
             <div class="doc-category">
                 <div class="doc-category-title">Infrastructure</div>
                 <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/testing.md" target="_blank" rel="noopener noreferrer">
+                    <div class="doc-card">
                         <h3>Testing</h3>
-                        <p>310+ test files, ~2,650 tests, MockLLMClient, async fixtures, CI/CD pipeline, test patterns</p>
-                        <div class="doc-file">testing.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/deployment.md" target="_blank" rel="noopener noreferrer">
+                        <p>310+ test files, ~2,650 tests. MockLLMClient for deterministic testing, async fixtures, focused domain testing. Merge gates enforce compilation + test + type checks</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Deployment</h3>
-                        <p>Cloud Run setup, Dockerfile, entrypoint.sh, GitHub Actions CI/CD, Firebase Hosting</p>
-                        <div class="doc-file">deployment.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/configuration.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Configuration</h3>
-                        <p>All 350+ environment variables with defaults, categories, and feature flags</p>
-                        <div class="doc-file">configuration.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/byok-model.md" target="_blank" rel="noopener noreferrer">
-                        <h3>BYOK Model</h3>
-                        <p>Bring Your Own Key architecture, provider routing, budget orchestrator, tier-based gating</p>
-                        <div class="doc-file">byok-model.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/telegram-integration.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Telegram Integration</h3>
-                        <p>Bot setup, command handlers, callback system, Director tools, two-agent architecture</p>
-                        <div class="doc-file">telegram-integration.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/scheduler.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Scheduler</h3>
-                        <p>APScheduler integration, cron jobs, health checks, PostgreSQL job store</p>
-                        <div class="doc-file">scheduler.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/chat-surfaces.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Chat Surfaces</h3>
-                        <p>How to connect Telegram/WhatsApp/Discord to a self-hosted instance</p>
-                        <div class="doc-file">chat-surfaces.md</div>
-                    </a>
+                        <p>Cloud Run on GCP. Dockerized backend with GitHub Actions CI/CD. Firebase Hosting for frontend. Autonomous deployment runbook with migration pre-flight gates</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>BYOK Architecture</h3>
+                        <p>Bring Your Own Key model. Users supply their own LLM API keys. Platform provides the intelligence layer (soul + state + policy). BudgetOrchestrator with credit ledger</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Billing Infrastructure</h3>
+                        <p>Provider-agnostic BillingService interface. Paddle adapter live. Add any provider by implementing one ~150 LOC adapter. TierGate middleware enforces subscription levels</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Scheduler &amp; Health</h3>
+                        <p>APScheduler with PostgreSQL job store for persistence. Daily health checks (DB + Neo4j + LLM providers). Weekly summary aggregation. Telegram alerts on failure</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Video Pipeline</h3>
+                        <p>5 video generation sinks (Higgsfield, Kling, Veo, Moltbook, Aggregator). SinkRouter for provider selection. Shot planning, tournament scoring, Vertex AI audio isolation</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Inventories -->
             <div class="doc-category">
-                <div class="doc-category-title">Inventories &amp; Capabilities</div>
+                <div class="doc-category-title">Capabilities &amp; Scale</div>
                 <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skills-and-tools-built.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Skills &amp; Tools Built</h3>
-                        <p>Complete inventory of user-facing skills, tools, connectors, sinks, cron jobs</p>
-                        <div class="doc-file">skills-and-tools-built.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skills-inventory.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Skills Inventory</h3>
-                        <p>All implemented and specced skills by engine category</p>
-                        <div class="doc-file">skills-inventory.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/capabilities-inventory.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Capabilities Inventory</h3>
-                        <p>Tier gating, paid vs free layer capabilities</p>
-                        <div class="doc-file">capabilities-inventory.md</div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Extending CES -->
-            <div class="doc-category">
-                <div class="doc-category-title">Extending CES</div>
-                <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-sink.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Adding a Sink</h3>
-                        <p>How to add a new output destination following the BaseSink pattern and SinkRouter registration</p>
-                        <div class="doc-file">adding-a-sink.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-source.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Adding a Source</h3>
-                        <p>How to add a new input connector following the OAuth pattern and SourceConnection model</p>
-                        <div class="doc-file">adding-a-source.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-format.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Adding a Format</h3>
-                        <p>How to create a new creative format with YAML framework definitions and format mapping</p>
-                        <div class="doc-file">adding-a-format.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-skill.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Adding a Skill</h3>
-                        <p>Skill graph architecture for composable creative operations (emerging pattern)</p>
-                        <div class="doc-file">adding-a-skill.md</div>
-                    </a>
+                    <div class="doc-card">
+                        <h3>Source Connectors</h3>
+                        <p>15+ input connectors: Google (Gmail, Drive, YouTube, Photos), Pinterest, NotebookLM, Readwise, Obsidian, Logseq, RSS, manual upload. OAuth-based, connect-don't-upload</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Output Sinks</h3>
+                        <p>18 output destinations: video (5 providers), text (Medium, Substack, KDP), audio (ElevenLabs), social (Telegram, WhatsApp, Discord), export (JSON, PDF)</p>
+                    </div>
+                    <div class="doc-card">
+                        <h3>Creative Formats</h3>
+                        <p>8 format pipelines: Memoir, Novel, Screenplay, TikTok Series, Birthday Video, Comic, Audiobook, Newsletter. YAML-defined frameworks with NSL beat structures</p>
+                    </div>
                 </div>
             </div>
 
@@ -649,16 +645,14 @@
             <div class="doc-category">
                 <div class="doc-category-title">Governance &amp; Policy</div>
                 <div class="doc-grid">
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skill-write-boundaries.md" target="_blank" rel="noopener noreferrer">
+                    <div class="doc-card">
+                        <h3>Creator Agency Doctrine</h3>
+                        <p>Decision rights framework: Suggest / Draft / Execute / Publish. Agency profiles per subscription tier. 5 minimum tenant guarantees including undo-always-available</p>
+                    </div>
+                    <div class="doc-card">
                         <h3>Skill Write Boundaries</h3>
-                        <p>R-013 service ownership boundaries for Skill writes (merge-gate policy)</p>
-                        <div class="doc-file">skill-write-boundaries.md</div>
-                    </a>
-                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/messaging-guardrails.md" target="_blank" rel="noopener noreferrer">
-                        <h3>Messaging Guardrails</h3>
-                        <p>Internal/external language policy for CES vs practitioner-facing copy</p>
-                        <div class="doc-file">messaging-guardrails.md</div>
-                    </a>
+                        <p>ECS-inspired service ownership. Each service has defined write boundaries to prevent sprawl. Merge gates enforce. Anti-pattern detection for cross-boundary writes</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -666,44 +660,45 @@
         <!-- Key Design Decisions -->
         <section class="section section-dark">
             <h2 class="section-title">Key Design Decisions</h2>
-            <p class="section-subtitle">Architectural choices that shape the system.</p>
+            <p class="section-subtitle">Architectural choices with reasoning.</p>
             <div class="grid grid-2">
                 <div class="card">
                     <div class="card-number">REASONING</div>
                     <h3>Society of Thought</h3>
-                    <p>Multi-variant tournament generation outperforms single-shot prompting. SOT-001 experiment: 40% peak capture rate. 3 variants, 0.2 wildcard ratio, [0.7, 0.9] temperature range.</p>
+                    <p>Multi-variant tournament generation outperforms single-shot prompting. SOT-001 experiment: 40% peak capture rate. 3 variants, 0.2 wildcard ratio, [0.7, 0.9] temperature range. Empirically validated, not theoretical.</p>
                 </div>
                 <div class="card">
                     <div class="card-number">GOVERNANCE</div>
                     <h3>Narrative Governor</h3>
-                    <p>Deterministic kill switches (Arc Wholeness, Character Integration, Setup-Payoff Distance) because LLMs cannot reliably self-govern. N1-N5 violation taxonomy with severity routing.</p>
+                    <p>Deterministic kill switches because LLMs cannot reliably self-govern. N1-N5 violation taxonomy with severity routing. The Governor is the moat &mdash; anyone can call Gemini, but consistent creative output requires external governance.</p>
                 </div>
                 <div class="card">
                     <div class="card-number">KNOWLEDGE</div>
                     <h3>Three-Layer Codex</h3>
-                    <p>Sovereign &gt; Project &gt; External trust hierarchy. Director-blessed knowledge takes precedence. Crystallization promotes raw material to trusted knowledge with blessing scores.</p>
+                    <p>Sovereign &gt; Project &gt; External trust hierarchy. Director-blessed knowledge takes precedence. Crystallization promotes raw material with blessing scores. Every creative session builds the knowledge base.</p>
                 </div>
                 <div class="card">
                     <div class="card-number">CONSISTENCY</div>
                     <h3>Transactional Outbox</h3>
-                    <p>Atomic writes across PostgreSQL + Neo4j + EventStore without 2PC. OutboxRelay processes pending entries asynchronously with retry logic and HITL approval gates.</p>
+                    <p>Atomic writes across PostgreSQL + Neo4j + EventStore without 2PC. OutboxRelay processes pending entries asynchronously with retry logic and HITL approval gates. Chosen over Saga pattern for simplicity.</p>
                 </div>
                 <div class="card">
-                    <div class="card-number">LLM ACCESS</div>
-                    <h3>BYOK Architecture</h3>
-                    <p>Users supply their own API keys. Platform provides the intelligence layer (soul + state + policy). BudgetOrchestrator skips budget checks when is_byok=True.</p>
+                    <div class="card-number">BUSINESS MODEL</div>
+                    <h3>Open-Core Split</h3>
+                    <p>Seitiate (AGPL engine, free) + Sakme (beautiful app, paid). Monetization boundary is experience, not capability. The engine is identical. Free users wire it themselves; paid users get the effortless experience.</p>
                 </div>
                 <div class="card">
-                    <div class="card-number">BILLING</div>
-                    <h3>Provider-Agnostic ABC</h3>
-                    <p>BillingService interface with MockBillingService and PaddleBillingService adapters. Add a new provider by implementing one ~150 LOC adapter file.</p>
+                    <div class="card-number">ARCHITECTURE</div>
+                    <h3>Entity Component System</h3>
+                    <p>The Talent Taxonomy emerged as an ECS &mdash; Skills are entities, metadata groups are components, executors are systems. Nobody designed it that way; it was discovered. Creative physics, not gamification.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Repo structure -->
+        <!-- Repository Structure -->
         <section class="section">
             <h2 class="section-title">Repository Structure</h2>
+            <p class="section-subtitle">Backend + frontend codebase layout.</p>
             <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">backend/</span>
 <span class="dim">├──</span> <span class="hl">app/</span>
 <span class="dim">│   ├──</span> <span class="hl">api/v1/</span>          <span class="dim">123 FastAPI routers</span>
@@ -713,13 +708,13 @@
 <span class="dim">│   ├──</span> <span class="hl">services/</span>        <span class="dim">308+ business logic services</span>
 <span class="dim">│   ├──</span> <span class="hl">sinks/</span>           <span class="dim">18 output destinations</span>
 <span class="dim">│   ├──</span> <span class="hl">graph/</span>           <span class="dim">Neo4j client + tenant isolation</span>
-<span class="dim">│   ├──</span> <span class="hl">middleware/</span>      <span class="dim">TenantContext, TierGate</span>
-<span class="dim">│   ├──</span> <span class="hl">data/</span>            <span class="dim">YAML configs (formats, frameworks)</span>
-<span class="dim">│   └──</span> <span class="hl">migrations/</span>      <span class="dim">80 Alembic migrations</span>
-<span class="dim">├──</span> <span class="hl">tests/</span>              <span class="dim">310+ test files</span>
-<span class="dim">├──</span> Dockerfile           <span class="dim">Production container</span>
-<span class="dim">├──</span> Dockerfile.audio     <span class="dim">Demucs/PyTorch (Vertex AI)</span>
-<span class="dim">└──</span> entrypoint.sh        <span class="dim">Cloud Run startup</span>
+<span class="dim">│   ├──</span> <span class="hl">middleware/</span>      <span class="dim">TenantContext, TierGate, RequestID</span>
+<span class="dim">│   ├──</span> <span class="hl">data/</span>            <span class="dim">YAML configs (formats, frameworks, NSL)</span>
+<span class="dim">│   └──</span> <span class="hl">migrations/</span>      <span class="dim">80+ Alembic migrations</span>
+<span class="dim">├──</span> <span class="hl">tests/</span>              <span class="dim">310+ test files, ~2,650 tests</span>
+<span class="dim">├──</span> Dockerfile           <span class="dim">Production container (Cloud Run)</span>
+<span class="dim">├──</span> Dockerfile.audio     <span class="dim">Demucs/PyTorch (Vertex AI Custom Jobs)</span>
+<span class="dim">└──</span> entrypoint.sh        <span class="dim">Cloud Run startup + migrations</span>
 
 <span class="gold">frontend/src/</span>
 <span class="dim">├──</span> <span class="hl">pages/</span>              <span class="dim">18 route-level components</span>
@@ -737,9 +732,8 @@
             <a href="/privacy.html">Privacy Policy</a>
             <a href="/terms.html">Terms of Service</a>
             <a href="https://seitiate.com">Seitiate (Open Source)</a>
-            <a href="https://github.com/gcharris/context-engine-studio" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
-        <p class="version">Private Document &mdash; March 2026</p>
+        <p class="version">Confidential &mdash; March 2026</p>
     </footer>
 </body>
 </html>
