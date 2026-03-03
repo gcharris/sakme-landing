@@ -2,7 +2,7 @@
 
 > **Authority:** R-013.e (Director ruling 2026-02-22)
 > **Enforcement:** Merge gate — PRs that bypass designated services get flagged in review.
-> **ADR:** [`docs/plans/2026-02-22-skill-ecs-transition-adr.md`](../plans/2026-02-22-skill-ecs-transition-adr.md)
+> **ADR:** `docs/plans/2026-02-22-skill-ecs-transition-adr.md` (internal)
 
 ---
 

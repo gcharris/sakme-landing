@@ -3,7 +3,7 @@
 > **Authority:** R-013.d (Director ruling 2026-02-22)
 > **Scope:** All user-facing copy — UI, marketing, onboarding, docs, landing pages, social
 > **Review gate:** Director approves final copy policy before launch
-> **ADR:** [`docs/plans/2026-02-22-skill-ecs-transition-adr.md`](../plans/2026-02-22-skill-ecs-transition-adr.md)
+> **ADR:** `docs/plans/2026-02-22-skill-ecs-transition-adr.md` (internal)
 
 ---
 
