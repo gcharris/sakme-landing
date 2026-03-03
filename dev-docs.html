@@ -1209,6 +1209,18 @@
             });
         });
 
+        // Intercept clicks on .md links inside expanded cards → navigate to that card
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('.doc-card-content-inner a');
+            if (!link) return;
+            const href = link.getAttribute('href') || '';
+            if (href.endsWith('.md')) {
+                e.preventDefault();
+                const slug = href.replace('.md', '').replace(/^.*\//, '');
+                location.hash = slug;
+            }
+        });
+
         // Deep link: auto-expand card from URL hash (e.g. #sovereign-codex)
         function openFromHash() {
             const hash = location.hash.replace('#', '');
