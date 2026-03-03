@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakme | Developer Documentation</title>
+    <meta name="description" content="Technical documentation for developers evaluating, contributing to, or forking Context Engine Studio.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0c0b0e;
+            --bg-panel: rgba(19, 18, 26, 0.6);
+            --bg-section-alt: #13121a;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9f;
+            --accent-dev: #818cf8;
+            --accent-dev-dim: rgba(129, 140, 248, 0.3);
+            --accent-dev-glow: rgba(129, 140, 248, 0.06);
+            --accent-warm: #d4a574;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border: #1e1e24;
+            --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--text-primary); text-decoration: none; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(12, 11, 14, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .nav-brand {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .nav-brand img {
+            height: 46px;
+            width: auto;
+            filter: invert(1) contrast(5);
+            mix-blend-mode: screen;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text-primary); }
+
+        /* Hero */
+        .hero-dev {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 3rem;
+            background: radial-gradient(ellipse at 50% 40%, var(--accent-dev-glow) 0%, var(--bg-dark) 70%);
+        }
+
+        .hero-badge {
+            margin-bottom: 2rem;
+            padding: 0.4rem 1.2rem;
+            border: 1px solid var(--accent-dev-dim);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: var(--accent-dev);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+        }
+
+        .dev-gradient {
+            background: linear-gradient(135deg, var(--accent-dev), #a5b4fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 560px;
+            line-height: 1.7;
+        }
+
+        .private-notice {
+            background: rgba(129, 140, 248, 0.08);
+            border: 1px solid var(--accent-dev-dim);
+            border-radius: var(--radius);
+            padding: 0.75rem 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-dev);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-dark {
+            background: var(--bg-section-alt);
+            max-width: 100%;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        .section-dark > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.05rem;
+        }
+
+        /* Grid */
+        .grid { display: grid; gap: 1.5rem; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+        /* Cards */
+        .card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glass);
+            padding: 2rem;
+            border-radius: var(--radius);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); border-color: rgba(129, 140, 248, 0.2); }
+        .card-number {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-dev);
+            margin-bottom: 0.75rem;
+        }
+        .card h3 { margin-bottom: 0.5rem; font-size: 1.15rem; }
+        .card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+
+        /* Category sections */
+        .doc-category { margin-bottom: 1rem; }
+        .doc-category-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-dev);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .doc-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glass);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius);
+            transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+        .doc-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-dev-dim);
+        }
+        .doc-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+        }
+        .doc-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+        .doc-card .doc-file {
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-dev);
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+        .doc-card-accent { border-color: var(--accent-dev-dim); }
+
+        /* Quick start box */
+        .quickstart {
+            background: var(--bg-panel);
+            border: 1px solid var(--accent-dev-dim);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 740px;
+            margin: 0 auto 3rem;
+        }
+        .quickstart h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .quickstart code {
+            display: block;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid var(--border-glass);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            overflow-x: auto;
+            white-space: pre;
+            margin-bottom: 0.75rem;
+        }
+        .quickstart code .comment { color: #6b7280; }
+        .quickstart code .cmd { color: var(--accent-dev); }
+        .quickstart code .path { color: var(--accent-warm); }
+
+        /* Architecture diagram */
+        .diagram {
+            background: rgba(19, 18, 26, 0.8);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            overflow-x: auto;
+            white-space: pre;
+            margin: 1.5rem 0;
+        }
+        .diagram .hl { color: var(--accent-dev); font-weight: 600; }
+        .diagram .gold { color: var(--accent-warm); font-weight: 600; }
+        .diagram .dim { color: #475569; }
+        .diagram .green { color: #4ade80; }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        .footer-brand {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--accent-dev); }
+
+        .version {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.5rem;
+            opacity: 0.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .doc-grid { grid-template-columns: 1fr; }
+            .hero-dev { padding: 6rem 1.5rem 2rem; min-height: 40vh; }
+            .stats-bar { gap: 1.5rem; }
+            .diagram { font-size: 0.65rem; padding: 1rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .section { padding: 3rem 1.5rem; }
+            nav .nav-links { gap: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="nav-brand"><img src="assets/sakme_logo.png" alt="Sakme"></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="https://seitiate.com">Seitiate</a>
+            <a href="https://github.com/gcharris/context-engine-studio" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-dev">
+            <div class="private-notice">
+                This is a private document for development partners. Please do not share publicly.
+            </div>
+            <div class="hero-badge">DEVELOPER DOCUMENTATION</div>
+            <h1>Context Engine <span class="dev-gradient">Studio</span></h1>
+            <p class="sub-text">
+                Technical documentation for developers evaluating, contributing to, or forking CES.
+                A multi-tenant FastAPI + PostgreSQL + Neo4j backend with a React frontend.
+            </p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-num">308+</div>
+                    <div class="stat-label">Services</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">123</div>
+                    <div class="stat-label">API Routers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">76</div>
+                    <div class="stat-label">Models</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">2,650+</div>
+                    <div class="stat-label">Tests</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">18</div>
+                    <div class="stat-label">Sinks</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section class="section">
+            <div class="quickstart">
+                <h3>Quick Start</h3>
+                <code><span class="comment"># Clone and install</span>
+<span class="cmd">git clone</span> git@github.com:gcharris/context-engine-studio.git
+<span class="cmd">cd</span> <span class="path">context-engine-studio/backend</span>
+<span class="cmd">pip install</span> -r requirements.txt
+
+<span class="comment"># Set minimum config</span>
+<span class="cmd">export</span> CES_DATABASE_URL=<span class="path">postgresql+asyncpg://user:pass@localhost/ces</span>
+<span class="cmd">export</span> CES_USE_MOCK_LLM=<span class="path">true</span>
+<span class="cmd">export</span> CES_ALLOW_DEV_AUTH=<span class="path">true</span>
+
+<span class="comment"># Run migrations and start</span>
+<span class="cmd">alembic</span> upgrade head
+<span class="cmd">uvicorn</span> app.main:app --reload</code>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    See <strong>configuration.md</strong> for all 350+ environment variables.
+                    See <strong>auth-system.md</strong> for the dev auth bypass.
+                </p>
+            </div>
+
+            <!-- Architecture overview diagram -->
+            <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">FRONTENDS</span>
+<span class="dim">├──</span> <span class="hl">React SPA</span> <span class="dim">──────── sakme.ai</span>
+<span class="dim">└──</span> <span class="hl">Telegram Bot</span> <span class="dim">──── @AgentC_Agency_bot</span>
+         <span class="dim">│</span>
+    <span class="gold">FastAPI (ASGI)</span>
+    <span class="dim">├──</span> CORSMiddleware
+    <span class="dim">├──</span> RequestIDMiddleware
+    <span class="dim">├──</span> TenantContextMiddleware
+    <span class="dim">└──</span> <span class="hl">123 API Routers</span> <span class="dim">── /api/v1/*</span>
+         <span class="dim">│</span>
+    <span class="dim">┌────┼────────┬──────────┐</span>
+    <span class="dim">▼</span>    <span class="dim">▼</span>        <span class="dim">▼</span>          <span class="dim">▼</span>
+<span class="hl">Services</span> <span class="hl">Graph</span>  <span class="hl">Outbox</span>   <span class="hl">Sinks</span>
+<span class="dim">(308+)</span>  <span class="dim">(Neo4j)</span> <span class="dim">(Relay)</span>   <span class="dim">(18)</span>
+    <span class="dim">│</span>    <span class="dim">│</span>        <span class="dim">│</span>          <span class="dim">│</span>
+    <span class="dim">▼</span>    <span class="dim">▼</span>        <span class="dim">▼</span>          <span class="dim">▼</span>
+<span class="green">PostgreSQL</span> <span class="green">Neo4j 5</span> <span class="green">EventStore</span> <span class="green">External</span></div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="section">
+            <div class="doc-category">
+                <div class="doc-category-title">Architecture</div>
+                <div class="doc-grid">
+                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/architecture-overview.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Architecture Overview</h3>
+                        <p>Complete system architecture: FastAPI backend, 308+ services, 18 sinks, React frontend, Telegram integration</p>
+                        <div class="doc-file">architecture-overview.md</div>
+                    </a>
+                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/data-model.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Data Model</h3>
+                        <p>76 SQLAlchemy models organized by domain, enums, relationships, and 80 Alembic migrations</p>
+                        <div class="doc-file">data-model.md</div>
+                    </a>
+                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/event-sourcing.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Event Sourcing &amp; Outbox</h3>
+                        <p>Immutable event log, Transactional Outbox Pattern, OutboxRelay, HITL approval gates</p>
+                        <div class="doc-file">event-sourcing.md</div>
+                    </a>
+                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/multi-tenancy.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Multi-Tenancy</h3>
+                        <p>Schema-per-tenant PostgreSQL, Cypher-level Neo4j filtering, tenant context middleware</p>
+                        <div class="doc-file">multi-tenancy.md</div>
+                    </a>
+                    <a class="doc-card doc-card-accent" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/auth-system.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Auth System</h3>
+                        <p>Four-tier hierarchy (Director Key, Dev Token, Dev Stub, Firebase), OAuth providers, BYOK vault</p>
+                        <div class="doc-file">auth-system.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Core Systems -->
+            <div class="doc-category">
+                <div class="doc-category-title">Core Creative Systems</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/learning-engine.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Learning Engine</h3>
+                        <p>How sources become ingredients: interview sessions, extraction pipeline, story bible generation</p>
+                        <div class="doc-file">learning-engine.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/knowledge-graph.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Knowledge Graph</h3>
+                        <p>Neo4j integration, GraphRAG queries, entity relationships, Flash-to-Foundry triplet seeding</p>
+                        <div class="doc-file">knowledge-graph.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/sovereign-codex.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Sovereign Codex</h3>
+                        <p>Three-layer knowledge stack (Sovereign/Project/External), crystallization, trust tiers, graduation</p>
+                        <div class="doc-file">sovereign-codex.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/voice-calibration.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Voice Calibration</h3>
+                        <p>Tournament-based voice learning, temperature strategies, VoiceProfile generation, multi-character</p>
+                        <div class="doc-file">voice-calibration.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/narrative-governor.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Narrative Governor</h3>
+                        <p>Kill switches, N1-N5 violation taxonomy, ORA loop, HATI protocol adaptation</p>
+                        <div class="doc-file">narrative-governor.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/society-of-thought.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Society of Thought</h3>
+                        <p>Tournament architecture, variant generation, consensus voting, wildcard injection</p>
+                        <div class="doc-file">society-of-thought.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/creative-refinement.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Creative Refinement</h3>
+                        <p>Protocol-based generate-critique-revise loop, critic/generator pairs, convergence config</p>
+                        <div class="doc-file">creative-refinement.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/creator-development-engine.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Creator Development Engine</h3>
+                        <p>Decision events, creator profiles, growth edges, provenance scoring, the Mirror</p>
+                        <div class="doc-file">creator-development-engine.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Agent & Routing -->
+            <div class="doc-category">
+                <div class="doc-category-title">Agent &amp; Routing</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/agentic-loop.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Agentic Loop</h3>
+                        <p>Multi-tool loop runtime, retries, compaction, fallback, streaming events</p>
+                        <div class="doc-file">agentic-loop.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/url-intelligence.md" target="_blank" rel="noopener noreferrer">
+                        <h3>URL Intelligence</h3>
+                        <p>URL insight/memo/triage skill behavior and API routes</p>
+                        <div class="doc-file">url-intelligence.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/inbox-router.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Inbox Router</h3>
+                        <p>File classification and routing behavior</p>
+                        <div class="doc-file">inbox-router.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Infrastructure -->
+            <div class="doc-category">
+                <div class="doc-category-title">Infrastructure</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/testing.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Testing</h3>
+                        <p>310+ test files, ~2,650 tests, MockLLMClient, async fixtures, CI/CD pipeline, test patterns</p>
+                        <div class="doc-file">testing.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/deployment.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Deployment</h3>
+                        <p>Cloud Run setup, Dockerfile, entrypoint.sh, GitHub Actions CI/CD, Firebase Hosting</p>
+                        <div class="doc-file">deployment.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/configuration.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Configuration</h3>
+                        <p>All 350+ environment variables with defaults, categories, and feature flags</p>
+                        <div class="doc-file">configuration.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/byok-model.md" target="_blank" rel="noopener noreferrer">
+                        <h3>BYOK Model</h3>
+                        <p>Bring Your Own Key architecture, provider routing, budget orchestrator, tier-based gating</p>
+                        <div class="doc-file">byok-model.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/telegram-integration.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Telegram Integration</h3>
+                        <p>Bot setup, command handlers, callback system, Director tools, two-agent architecture</p>
+                        <div class="doc-file">telegram-integration.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/scheduler.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Scheduler</h3>
+                        <p>APScheduler integration, cron jobs, health checks, PostgreSQL job store</p>
+                        <div class="doc-file">scheduler.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/chat-surfaces.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Chat Surfaces</h3>
+                        <p>How to connect Telegram/WhatsApp/Discord to a self-hosted instance</p>
+                        <div class="doc-file">chat-surfaces.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Inventories -->
+            <div class="doc-category">
+                <div class="doc-category-title">Inventories &amp; Capabilities</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skills-and-tools-built.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Skills &amp; Tools Built</h3>
+                        <p>Complete inventory of user-facing skills, tools, connectors, sinks, cron jobs</p>
+                        <div class="doc-file">skills-and-tools-built.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skills-inventory.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Skills Inventory</h3>
+                        <p>All implemented and specced skills by engine category</p>
+                        <div class="doc-file">skills-inventory.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/capabilities-inventory.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Capabilities Inventory</h3>
+                        <p>Tier gating, paid vs free layer capabilities</p>
+                        <div class="doc-file">capabilities-inventory.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Extending CES -->
+            <div class="doc-category">
+                <div class="doc-category-title">Extending CES</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-sink.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Adding a Sink</h3>
+                        <p>How to add a new output destination following the BaseSink pattern and SinkRouter registration</p>
+                        <div class="doc-file">adding-a-sink.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-source.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Adding a Source</h3>
+                        <p>How to add a new input connector following the OAuth pattern and SourceConnection model</p>
+                        <div class="doc-file">adding-a-source.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-format.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Adding a Format</h3>
+                        <p>How to create a new creative format with YAML framework definitions and format mapping</p>
+                        <div class="doc-file">adding-a-format.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/adding-a-skill.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Adding a Skill</h3>
+                        <p>Skill graph architecture for composable creative operations (emerging pattern)</p>
+                        <div class="doc-file">adding-a-skill.md</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Governance -->
+            <div class="doc-category">
+                <div class="doc-category-title">Governance &amp; Policy</div>
+                <div class="doc-grid">
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/skill-write-boundaries.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Skill Write Boundaries</h3>
+                        <p>R-013 service ownership boundaries for Skill writes (merge-gate policy)</p>
+                        <div class="doc-file">skill-write-boundaries.md</div>
+                    </a>
+                    <a class="doc-card" href="https://github.com/gcharris/context-engine-studio/blob/main/docs/dev-docs/messaging-guardrails.md" target="_blank" rel="noopener noreferrer">
+                        <h3>Messaging Guardrails</h3>
+                        <p>Internal/external language policy for CES vs practitioner-facing copy</p>
+                        <div class="doc-file">messaging-guardrails.md</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Design Decisions -->
+        <section class="section section-dark">
+            <h2 class="section-title">Key Design Decisions</h2>
+            <p class="section-subtitle">Architectural choices that shape the system.</p>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-number">REASONING</div>
+                    <h3>Society of Thought</h3>
+                    <p>Multi-variant tournament generation outperforms single-shot prompting. SOT-001 experiment: 40% peak capture rate. 3 variants, 0.2 wildcard ratio, [0.7, 0.9] temperature range.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">GOVERNANCE</div>
+                    <h3>Narrative Governor</h3>
+                    <p>Deterministic kill switches (Arc Wholeness, Character Integration, Setup-Payoff Distance) because LLMs cannot reliably self-govern. N1-N5 violation taxonomy with severity routing.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">KNOWLEDGE</div>
+                    <h3>Three-Layer Codex</h3>
+                    <p>Sovereign &gt; Project &gt; External trust hierarchy. Director-blessed knowledge takes precedence. Crystallization promotes raw material to trusted knowledge with blessing scores.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">CONSISTENCY</div>
+                    <h3>Transactional Outbox</h3>
+                    <p>Atomic writes across PostgreSQL + Neo4j + EventStore without 2PC. OutboxRelay processes pending entries asynchronously with retry logic and HITL approval gates.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">LLM ACCESS</div>
+                    <h3>BYOK Architecture</h3>
+                    <p>Users supply their own API keys. Platform provides the intelligence layer (soul + state + policy). BudgetOrchestrator skips budget checks when is_byok=True.</p>
+                </div>
+                <div class="card">
+                    <div class="card-number">BILLING</div>
+                    <h3>Provider-Agnostic ABC</h3>
+                    <p>BillingService interface with MockBillingService and PaddleBillingService adapters. Add a new provider by implementing one ~150 LOC adapter file.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Repo structure -->
+        <section class="section">
+            <h2 class="section-title">Repository Structure</h2>
+            <div class="diagram" style="max-width: 740px; margin: 0 auto;"><span class="gold">backend/</span>
+<span class="dim">├──</span> <span class="hl">app/</span>
+<span class="dim">│   ├──</span> <span class="hl">api/v1/</span>          <span class="dim">123 FastAPI routers</span>
+<span class="dim">│   ├──</span> <span class="hl">core/</span>            <span class="dim">Config, database, security, vault</span>
+<span class="dim">│   ├──</span> <span class="hl">models/</span>          <span class="dim">76 SQLAlchemy models</span>
+<span class="dim">│   ├──</span> <span class="hl">schemas/</span>         <span class="dim">50+ Pydantic schemas</span>
+<span class="dim">│   ├──</span> <span class="hl">services/</span>        <span class="dim">308+ business logic services</span>
+<span class="dim">│   ├──</span> <span class="hl">sinks/</span>           <span class="dim">18 output destinations</span>
+<span class="dim">│   ├──</span> <span class="hl">graph/</span>           <span class="dim">Neo4j client + tenant isolation</span>
+<span class="dim">│   ├──</span> <span class="hl">middleware/</span>      <span class="dim">TenantContext, TierGate</span>
+<span class="dim">│   ├──</span> <span class="hl">data/</span>            <span class="dim">YAML configs (formats, frameworks)</span>
+<span class="dim">│   └──</span> <span class="hl">migrations/</span>      <span class="dim">80 Alembic migrations</span>
+<span class="dim">├──</span> <span class="hl">tests/</span>              <span class="dim">310+ test files</span>
+<span class="dim">├──</span> Dockerfile           <span class="dim">Production container</span>
+<span class="dim">├──</span> Dockerfile.audio     <span class="dim">Demucs/PyTorch (Vertex AI)</span>
+<span class="dim">└──</span> entrypoint.sh        <span class="dim">Cloud Run startup</span>
+
+<span class="gold">frontend/src/</span>
+<span class="dim">├──</span> <span class="hl">pages/</span>              <span class="dim">18 route-level components</span>
+<span class="dim">├──</span> <span class="hl">components/</span>         <span class="dim">186 React components</span>
+<span class="dim">├──</span> <span class="hl">hooks/</span>              <span class="dim">14 custom hooks</span>
+<span class="dim">├──</span> <span class="hl">api/</span>                <span class="dim">API client layer</span>
+<span class="dim">└──</span> <span class="hl">stores/</span>             <span class="dim">Auth context, UI state</span></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-brand">sakme</div>
+        <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+            <a href="https://seitiate.com">Seitiate (Open Source)</a>
+            <a href="https://github.com/gcharris/context-engine-studio" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="version">Private Document &mdash; March 2026</p>
+    </footer>
+</body>
+</html>
