@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sakme Login Redirect</title>
+  <meta name="robots" content="noindex">
+  <script>
+    (function () {
+      var search = window.location.search || "";
+      var hash = window.location.hash || "";
+      window.location.replace("https://kognist.web.app/login" + search + hash);
+    })();
+  </script>
+</head>
+<body style="font-family: system-ui, -apple-system, sans-serif; background: #090b11; color: #e8edf4; display: grid; place-items: center; min-height: 100vh; margin: 0;">
+  <main>
+    <p>Redirecting to login...</p>
+    <p><a href="https://kognist.web.app/login" style="color: #d4a574;">Continue</a></p>
+  </main>
+</body>
+</html>
