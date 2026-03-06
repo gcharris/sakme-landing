@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0d'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='bold' fill='%23e8e5e0'%3ES%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0d;
@@ -34,7 +34,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
@@ -172,13 +172,13 @@
         }
 
         .hero-headline {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-            font-weight: 400;
+            font-weight: 600;
             line-height: 1.25;
             max-width: 700px;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         .hero-headline em {
@@ -208,14 +208,19 @@
             background: var(--accent-warm);
             color: var(--bg);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.9rem;
             border-radius: 5px;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             letter-spacing: 0.01em;
+            box-shadow: 0 4px 15px rgba(200, 149, 106, 0.15);
         }
 
-        .cta-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .cta-primary:hover { 
+            filter: brightness(1.1); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(200, 149, 106, 0.3);
+        }
 
         .cta-secondary {
             display: inline-block;
@@ -270,9 +275,9 @@
         }
 
         .persona-item {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-            font-weight: 400;
+            font-weight: 500;
             color: var(--text-secondary);
             line-height: 1.6;
             transition: color 0.3s;
@@ -282,19 +287,19 @@
 
         .persona-item strong {
             color: var(--text);
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .persona-item .role {
             color: var(--accent-warm);
-            font-style: italic;
+            font-style: normal;
         }
 
         .persona-last {
             margin-top: 1rem;
             padding-top: 1.5rem;
             border-top: 1px solid var(--border-subtle);
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.15rem, 2.5vw, 1.5rem);
             color: var(--text);
             font-style: italic;
@@ -314,10 +319,11 @@
         }
 
         .section-header h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 400;
+            font-weight: 600;
             margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
         }
 
         .section-header p {
@@ -339,12 +345,13 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 2.5rem 2rem;
-            transition: border-color 0.3s, transform 0.3s;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .domain-card:hover {
-            border-color: var(--text-dim);
-            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
         .domain-card .domain-label {
@@ -360,9 +367,9 @@
         .domain-card.spirit .domain-label { color: var(--accent-blue); }
 
         .domain-card h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.75rem;
         }
 
@@ -417,8 +424,9 @@
         }
 
         .how-step .step-num {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 2rem;
+            font-weight: 700;
             color: var(--accent-warm);
             opacity: 0.35;
             flex-shrink: 0;
@@ -429,7 +437,7 @@
 
         .how-step h3 {
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.35rem;
         }
 
@@ -459,11 +467,12 @@
         }
 
         .trust-line {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: clamp(1.2rem, 2.8vw, 1.65rem);
-            font-weight: 400;
+            font-weight: 600;
             color: var(--text);
             line-height: 1.5;
+            letter-spacing: -0.01em;
         }
 
         .trust-explain {
@@ -514,10 +523,14 @@
             padding: 2rem 1.75rem;
             display: flex;
             flex-direction: column;
-            transition: border-color 0.3s;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .tier-card:hover { border-color: var(--text-dim); }
+        .tier-card:hover { 
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
 
         .tier-card.featured {
             border-color: var(--accent-warm);
@@ -525,9 +538,9 @@
         }
 
         .tier-name {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 1.4rem;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.2rem;
         }
 
@@ -560,10 +573,11 @@
         }
 
         .opensource h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 1.8rem;
-            font-weight: 400;
+            font-weight: 600;
             margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .opensource p {
@@ -575,7 +589,7 @@
         }
 
         .opensource .analogy {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-size: 1.1rem;
             color: var(--text-dim);
             font-style: italic;
@@ -583,8 +597,8 @@
         }
 
         .engine-name {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 400;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 500;
             letter-spacing: 0.12em;
             color: var(--accent-green);
             text-transform: lowercase;
@@ -598,8 +612,9 @@
         }
 
         footer .footer-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-dim);
         }
@@ -646,7 +661,7 @@
 
         .origin .sakme-meaning {
             margin-top: 1rem;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Syne', sans-serif;
             font-style: italic;
             font-size: 0.95rem;
             color: var(--text-secondary);
