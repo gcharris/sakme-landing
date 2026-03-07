@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0d'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='bold' fill='%23e8e5e0'%3ES%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0d;
@@ -75,8 +75,6 @@
         nav .nav-brand img {
             height: 28px;
             width: auto;
-            mix-blend-mode: screen;
-            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         nav .nav-links {
@@ -158,8 +156,6 @@
             height: clamp(56px, 11vw, 100px);
             width: auto;
             object-fit: contain;
-            mix-blend-mode: screen;
-            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         .etymology {
@@ -178,11 +174,11 @@
         .hero-headline {
             font-family: 'Syne', sans-serif;
             font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-            font-weight: 600;
+            font-weight: 400;
             line-height: 1.25;
             max-width: 700px;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.01em;
         }
 
         .hero-headline em {
@@ -212,19 +208,14 @@
             background: var(--accent-warm);
             color: var(--bg);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 0.9rem;
             border-radius: 5px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s;
             letter-spacing: 0.01em;
-            box-shadow: 0 4px 15px rgba(200, 149, 106, 0.15);
         }
 
-        .cta-primary:hover { 
-            filter: brightness(1.1); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(200, 149, 106, 0.3);
-        }
+        .cta-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
         .cta-secondary {
             display: inline-block;
@@ -281,7 +272,7 @@
         .persona-item {
             font-family: 'Syne', sans-serif;
             font-size: clamp(1.1rem, 2.5vw, 1.45rem);
-            font-weight: 500;
+            font-weight: 400;
             color: var(--text-secondary);
             line-height: 1.6;
             transition: color 0.3s;
@@ -291,12 +282,12 @@
 
         .persona-item strong {
             color: var(--text);
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .persona-item .role {
             color: var(--accent-warm);
-            font-style: normal;
+            font-style: italic;
         }
 
         .persona-last {
@@ -325,9 +316,8 @@
         .section-header h2 {
             font-family: 'Syne', sans-serif;
             font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 600;
+            font-weight: 400;
             margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
         }
 
         .section-header p {
@@ -349,13 +339,12 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 2.5rem 2rem;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: border-color 0.3s, transform 0.3s;
         }
 
         .domain-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border-color: var(--text-dim);
+            transform: translateY(-2px);
         }
 
         .domain-card .domain-label {
@@ -373,7 +362,7 @@
         .domain-card h3 {
             font-family: 'Syne', sans-serif;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 0.75rem;
         }
 
@@ -430,7 +419,6 @@
         .how-step .step-num {
             font-family: 'Syne', sans-serif;
             font-size: 2rem;
-            font-weight: 700;
             color: var(--accent-warm);
             opacity: 0.35;
             flex-shrink: 0;
@@ -441,7 +429,7 @@
 
         .how-step h3 {
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 0.35rem;
         }
 
@@ -473,10 +461,9 @@
         .trust-line {
             font-family: 'Syne', sans-serif;
             font-size: clamp(1.2rem, 2.8vw, 1.65rem);
-            font-weight: 600;
+            font-weight: 400;
             color: var(--text);
             line-height: 1.5;
-            letter-spacing: -0.01em;
         }
 
         .trust-explain {
@@ -527,14 +514,10 @@
             padding: 2rem 1.75rem;
             display: flex;
             flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: border-color 0.3s;
         }
 
-        .tier-card:hover { 
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
+        .tier-card:hover { border-color: var(--text-dim); }
 
         .tier-card.featured {
             border-color: var(--accent-warm);
@@ -544,7 +527,7 @@
         .tier-name {
             font-family: 'Syne', sans-serif;
             font-size: 1.4rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 0.2rem;
         }
 
@@ -579,9 +562,8 @@
         .opensource h2 {
             font-family: 'Syne', sans-serif;
             font-size: 1.8rem;
-            font-weight: 600;
+            font-weight: 400;
             margin-bottom: 1rem;
-            letter-spacing: -0.02em;
         }
 
         .opensource p {
@@ -601,8 +583,8 @@
         }
 
         .engine-name {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 500;
+            font-family: 'Syne', sans-serif;
+            font-weight: 400;
             letter-spacing: 0.12em;
             color: var(--accent-green);
             text-transform: lowercase;
@@ -617,8 +599,7 @@
 
         footer .footer-brand {
             font-family: 'Syne', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: var(--text-dim);
         }
@@ -933,5 +914,42 @@
         </div>
     </footer>
 
+    <script>
+    // Remove white background from logo PNG → transparent, recolor to light
+    function processLogo(img, targetColor) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            // Calculate luminance — white/near-white becomes transparent
+            const lum = (r * 0.299 + g * 0.587 + b * 0.114);
+            if (lum > 200) {
+                data[i+3] = 0; // fully transparent
+            } else {
+                // Recolor dark pixels to target light color
+                data[i]   = targetColor[0];
+                data[i+1] = targetColor[1];
+                data[i+2] = targetColor[2];
+                // Keep some anti-aliasing: use inverse luminance as alpha
+                data[i+3] = Math.round(255 * (1 - lum / 255));
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const light = [232, 229, 224]; // var(--text) #e8e5e0
+        document.querySelectorAll('#hero-logo, #nav-logo').forEach(img => {
+            if (img.complete) processLogo(img, light);
+            else img.onload = () => processLogo(img, light);
+        });
+    });
+    </script>
 </body>
 </html>
