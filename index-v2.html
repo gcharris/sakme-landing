@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakme — Your workspace. Your gallery. Your livelihood.</title>
+    <meta name="description" content="Sakme is an AI coworking space for creators and professionals with domain knowledge. Bring your expertise, create with AI that learns you, sell your work and keep 100%.">
+    <meta property="og:title" content="Sakme — An AI coworking space where your expertise becomes your livelihood.">
+    <meta property="og:description" content="Workspace. Gallery. Marketplace. No commission on what you sell. No claim on your data. Your subscription is your only cost.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sakme.ai">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0d'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='bold' fill='%23e8e5e0'%3ES%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0d;
+            --surface: #111116;
+            --surface-raised: #18181f;
+            --border: #1e1e26;
+            --border-subtle: #16161c;
+            --text: #e8e5e0;
+            --text-secondary: #8e8e96;
+            --text-dim: #5a5a62;
+            --accent-warm: #c8956a;
+            --accent-warm-glow: rgba(200, 149, 106, 0.08);
+            --accent-red: #b85a4a;
+            --accent-green: #5a9a72;
+            --accent-blue: #5878a8;
+            --accent-cream: #f0e6d6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Grain overlay --- */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* --- Nav --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 13, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        nav .nav-brand {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .nav-brand img {
+            height: 28px;
+            width: auto;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: var(--text); }
+
+        nav .nav-engine {
+            padding: 0.4rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 0.82rem;
+        }
+
+        nav .nav-engine:hover { border-color: var(--text-dim); }
+
+        nav .nav-login {
+            padding: 0.4rem 0.9rem;
+            border: 1px solid var(--text-dim);
+            border-radius: 5px;
+            color: var(--text);
+            font-size: 0.82rem;
+        }
+
+        nav .nav-login:hover { border-color: var(--text-secondary); }
+
+        /* --- Hero --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-warm-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .brand-container {
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand-img {
+            height: clamp(56px, 11vw, 100px);
+            width: auto;
+            object-fit: contain;
+        }
+
+        .etymology {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .etymology em {
+            font-style: normal;
+            color: var(--accent-warm);
+        }
+
+        .hero-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.25;
+            max-width: 700px;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-headline em {
+            font-style: italic;
+            color: var(--accent-warm);
+        }
+
+        .hero-sub {
+            max-width: 540px;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--accent-warm);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+        }
+
+        .cta-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        .cta-secondary {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        .cta-secondary:hover {
+            border-color: var(--text-dim);
+            color: var(--text);
+        }
+
+        /* --- Personas --- */
+        .personas {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .personas::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .personas-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .personas-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+        }
+
+        .persona-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .persona-item {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .persona-item:hover { color: var(--text); }
+
+        .persona-item strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .persona-item .role {
+            color: var(--accent-warm);
+            font-style: italic;
+        }
+
+        .persona-last {
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+            color: var(--text);
+            font-style: italic;
+            max-width: 500px;
+        }
+
+        /* --- Three Domains --- */
+        .domains {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 460px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .domain-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2.5rem 2rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .domain-card:hover {
+            border-color: var(--text-dim);
+            transform: translateY(-2px);
+        }
+
+        .domain-card .domain-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .domain-card.body .domain-label { color: var(--accent-red); }
+        .domain-card.mind .domain-label { color: var(--accent-green); }
+        .domain-card.spirit .domain-label { color: var(--accent-blue); }
+
+        .domain-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .domain-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            font-weight: 300;
+        }
+
+        .domain-features {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .domain-features span {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            padding-left: 1rem;
+            position: relative;
+            font-weight: 300;
+        }
+
+        .domain-features span::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 6px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* --- How It Works --- */
+        .how {
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .how-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .how-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            align-items: flex-start;
+        }
+
+        .how-step .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--accent-warm);
+            opacity: 0.35;
+            flex-shrink: 0;
+            width: 2rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .how-step h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.35rem;
+        }
+
+        .how-step p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            font-weight: 300;
+        }
+
+        /* --- Trust Commitment --- */
+        .trust {
+            padding: 5rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .trust-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .trust-promises {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .trust-line {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 2.8vw, 1.65rem);
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .trust-explain {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            max-width: 520px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* --- Tiers --- */
+        .tiers {
+            padding: 6rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .tiers-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tiers-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .tiers-commitment {
+            text-align: center;
+            color: var(--accent-warm);
+            font-size: 0.88rem;
+            margin-bottom: 3.5rem;
+            letter-spacing: 0.01em;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .tier-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s;
+        }
+
+        .tier-card:hover { border-color: var(--text-dim); }
+
+        .tier-card.featured {
+            border-color: var(--accent-warm);
+            background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
+        }
+
+        .tier-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .tier-price {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .tier-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            flex: 1;
+            font-weight: 300;
+        }
+
+        /* --- Open Source --- */
+        .opensource {
+            padding: 5rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .opensource-inner {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .opensource h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .opensource p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+            font-size: 0.95rem;
+        }
+
+        .opensource .analogy {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .engine-name {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: var(--accent-green);
+            text-transform: lowercase;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        footer .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+        }
+
+        footer p {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover { color: var(--text-secondary); }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.75rem;
+        }
+
+        /* --- Origin --- */
+        .origin {
+            padding: 4rem 2rem 3rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .origin-inner {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .origin p {
+            color: var(--text-dim);
+            font-size: 0.88rem;
+            line-height: 1.85;
+            font-weight: 300;
+        }
+
+        .origin .sakme-meaning {
+            margin-top: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero > * {
+            animation: fadeUp 0.8s ease-out both;
+        }
+
+        .hero > *:nth-child(1) { animation-delay: 0.1s; }
+        .hero > *:nth-child(2) { animation-delay: 0.2s; }
+        .hero > *:nth-child(3) { animation-delay: 0.35s; }
+        .hero > *:nth-child(4) { animation-delay: 0.5s; }
+        .hero > *:nth-child(5) { animation-delay: 0.65s; }
+
+        .persona-item {
+            opacity: 0;
+            animation: fadeUp 0.6s ease-out both;
+        }
+
+        .persona-item:nth-child(1) { animation-delay: 0.1s; }
+        .persona-item:nth-child(2) { animation-delay: 0.2s; }
+        .persona-item:nth-child(3) { animation-delay: 0.3s; }
+        .persona-item:nth-child(4) { animation-delay: 0.4s; }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            .domain-grid { grid-template-columns: 1fr; }
+            .tier-grid { grid-template-columns: 1fr; }
+            .hero { padding: 5rem 1.5rem 3rem; }
+            nav { padding: 0.75rem 1.25rem; }
+            nav .nav-links { gap: 0.75rem; }
+            .personas { padding: 3.5rem 1.5rem; }
+            .trust { padding: 3.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <a href="/" class="nav-brand"><img src="assets/sakme_logo.png" alt="Sakme" id="nav-logo"></a>
+        <div class="nav-links">
+            <a href="#how">How it works</a>
+            <a href="#tiers">Pricing</a>
+            <a href="/login/" class="nav-login">Log in</a>
+            <a href="https://seitiate.com" class="nav-engine">Engine</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="brand-container">
+            <img src="assets/sakme_logo.png" alt="Sakme" class="brand-img" id="hero-logo">
+        </h1>
+        <h2 class="hero-headline">An AI coworking space where your <em>expertise</em> becomes your livelihood</h2>
+        <p class="hero-sub">
+            Your workspace, your gallery, your marketplace. Bring your domain knowledge &mdash; creative, professional, or both. Work with an AI collaborator that learns what &ldquo;good&rdquo; means to you. Build tools others need. Sell your work and keep everything you earn.
+        </p>
+        <div class="cta-group">
+            <a href="/login/" class="cta-primary">Join waitlist</a>
+            <a href="#how" class="cta-secondary">How it works</a>
+        </div>
+    </section>
+
+    <!-- Personas -->
+    <section class="personas">
+        <div class="personas-inner">
+            <div class="personas-label">Who lives here</div>
+            <div class="persona-list">
+                <div class="persona-item">For <span class="role">the writer</span> building a story engine that remembers their characters</div>
+                <div class="persona-item">For <span class="role">the accountant</span> turning tax expertise into a service other solopreneurs buy</div>
+                <div class="persona-item">For <span class="role">the music producer</span> scoring content and selling sample packs</div>
+                <div class="persona-item">For <span class="role">the consultant</span> wrapping domain expertise in tools that work while they sleep</div>
+            </div>
+            <div class="persona-last">For anyone whose knowledge is worth more than a salary lets them earn.</div>
+        </div>
+    </section>
+
+    <!-- Three Domains -->
+    <section class="domains">
+        <div class="section-header">
+            <h2>What you have. What could happen. What it means.</h2>
+            <p>Three layers of intelligence, working together.</p>
+        </div>
+        <div class="domain-grid">
+            <div class="domain-card body">
+                <div class="domain-label">What You Have</div>
+                <h3>Your Memory</h3>
+                <p>Everything you've brought in and everything you've decided. Your sources, your taste, your domain knowledge &mdash; growing with every session.</p>
+                <div class="domain-features">
+                    <span>Connect your notes, research, and professional knowledge</span>
+                    <span>Decisions you've made, patterns you've discovered</span>
+                    <span>Financial insights alongside creative insights</span>
+                </div>
+            </div>
+            <div class="domain-card mind">
+                <div class="domain-label">What Could Happen</div>
+                <h3>Your Options</h3>
+                <p>AI that explores more possibilities than you could alone. Multiple directions, variations, and approaches &mdash; then you choose.</p>
+                <div class="domain-features">
+                    <span>Multiple variations, not just one answer</span>
+                    <span>Voice calibration that finds your style</span>
+                    <span>The wild card &mdash; the unexpected direction that works</span>
+                </div>
+            </div>
+            <div class="domain-card spirit">
+                <div class="domain-label">What It Means</div>
+                <h3>Your Growth</h3>
+                <p>The understanding that emerges from your practice. What &ldquo;good&rdquo; means to you. How your expertise has evolved. Your originality, measured.</p>
+                <div class="domain-features">
+                    <span>Originality tracking across everything you make</span>
+                    <span>Quality standards that reflect your judgement</span>
+                    <span>Creative and professional development, visible and real</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how" id="how">
+        <div class="how-inner">
+            <div class="section-header">
+                <h2>How Sakme works</h2>
+            </div>
+            <div class="how-step">
+                <div class="step-num">1</div>
+                <div>
+                    <h3>Bring your material</h3>
+                    <p>Connect your notes, research, bookmarks, and professional knowledge. Sakme indexes what you already have &mdash; it doesn't start from zero.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">2</div>
+                <div>
+                    <h3>Create with your Alter Ego</h3>
+                    <p>Your AI collaborator learns your voice, your preferences, and your standards. It generates options. You decide what's good.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">3</div>
+                <div>
+                    <h3>Every decision teaches it</h3>
+                    <p>When you choose, reject, or refine &mdash; Sakme learns. After weeks of use, it understands what you mean when you say &ldquo;make it better.&rdquo;</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">4</div>
+                <div>
+                    <h3>Your understanding compounds</h3>
+                    <p>Insights from one project carry into the next. Your professional memory grows. The workspace becomes genuinely yours &mdash; not a blank page every time.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">5</div>
+                <div>
+                    <h3>Build what you need, sell what others need</h3>
+                    <p>The tools you build to solve your own problems can be published to the marketplace. Other professionals and creators buy them. You keep 100% of every sale.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <div class="step-num">6</div>
+                <div>
+                    <h3>Your workspace becomes your livelihood</h3>
+                    <p>Income tracking, expense tracking, and financial insights &mdash; built into the same workspace. The AI that knows your creative patterns also sees your business trajectory.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Commitment -->
+    <section class="trust">
+        <div class="trust-inner">
+            <div class="trust-promises">
+                <div class="trust-line">We don't take a cut of your sales.</div>
+                <div class="trust-line">We don't train on your data.</div>
+                <div class="trust-line">We don't own what you create.</div>
+            </div>
+            <p class="trust-explain">
+                You pay for your workspace. Everything you build in it belongs to you. Everything you earn on it stays with you. Your subscription is your only cost &mdash; not the price of admission to someone else's economy.
+            </p>
+        </div>
+    </section>
+
+    <!-- Tiers -->
+    <section class="tiers" id="tiers">
+        <div class="tiers-inner">
+            <div class="section-header">
+                <h2>Choose your practice</h2>
+            </div>
+            <p class="tiers-subtitle">A workspace, a gallery, and a marketplace. Every tier includes all three.</p>
+            <p class="tiers-commitment">No commission on anything you sell. Your subscription is your only cost.</p>
+            <div class="tier-grid">
+                <div class="tier-card">
+                    <div class="tier-name">Sense</div>
+                    <div class="tier-price">Free</div>
+                    <div class="tier-desc">
+                        The full workspace with your own AI key. All tools, all connectors, all export formats. Financial management included. Generous and real &mdash; not a trial.
+                    </div>
+                </div>
+                <div class="tier-card featured">
+                    <div class="tier-name">Making</div>
+                    <div class="tier-price">From $9/month</div>
+                    <div class="tier-desc">
+                        Hosted AI, morning reflections, and your Alter Ego learning from every session. The daily creative practice, powered.
+                    </div>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-name">Meaning</div>
+                    <div class="tier-price">From $19/month</div>
+                    <div class="tier-desc">
+                        Advanced voice calibration, originality tracking, video generation, and development insights. For serious creative and professional work.
+                    </div>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-name">Mastery</div>
+                    <div class="tier-price">From $39/month</div>
+                    <div class="tier-desc">
+                        Priority processing, marketplace publishing with zero commission on all sales, advanced analytics, and the full depth of the engine. For professionals.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Source -->
+    <section class="opensource">
+        <div class="opensource-inner">
+            <h2>Built on open foundations</h2>
+            <p>
+                Sakme is powered by <span class="engine-name">seitiate</span> &mdash; an open-source engine (AGPL-3.0) for building AI systems that accumulate understanding. Context engine, knowledge architecture, and creative governance. Fork it. Extend it. Build your own.
+            </p>
+            <p class="analogy">Seitiate is the engine. Sakme is the experience. Like Linux and Ubuntu.</p>
+            <a href="https://seitiate.com" class="cta-secondary">Explore Seitiate</a>
+        </div>
+    </section>
+
+    <!-- Origin -->
+    <section class="origin">
+        <div class="origin-inner">
+            <p>
+                Built in Georgia, at the crossroads of East and West. Sakme exists to close the digital divide &mdash; giving anyone with knowledge and skill the same infrastructure that was once reserved for well-funded teams in wealthy markets.
+            </p>
+            <p class="sakme-meaning">
+                Sakme is Georgian for your work, your craft, your affair.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">sakme</div>
+        <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="mailto:hello@sakme.ai">Contact</a>
+            <a href="https://seitiate.com">Seitiate</a>
+        </div>
+    </footer>
+
+    <script>
+    // Remove white background from logo PNG → transparent, recolor to light
+    function processLogo(img, targetColor) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            // Calculate luminance — white/near-white becomes transparent
+            const lum = (r * 0.299 + g * 0.587 + b * 0.114);
+            if (lum > 200) {
+                data[i+3] = 0; // fully transparent
+            } else {
+                // Recolor dark pixels to target light color
+                data[i]   = targetColor[0];
+                data[i+1] = targetColor[1];
+                data[i+2] = targetColor[2];
+                // Keep some anti-aliasing: use inverse luminance as alpha
+                data[i+3] = Math.round(255 * (1 - lum / 255));
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const light = [232, 229, 224]; // var(--text) #e8e5e0
+        document.querySelectorAll('#hero-logo, #nav-logo').forEach(img => {
+            if (img.complete) processLogo(img, light);
+            else img.onload = () => processLogo(img, light);
+        });
+    });
+    </script>
+</body>
+</html>
