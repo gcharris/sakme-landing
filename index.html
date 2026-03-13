@@ -75,6 +75,8 @@
         nav .nav-brand img {
             height: 28px;
             width: auto;
+            mix-blend-mode: screen;
+            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         nav .nav-links {
@@ -156,6 +158,8 @@
             height: clamp(56px, 11vw, 100px);
             width: auto;
             object-fit: contain;
+            mix-blend-mode: screen;
+            filter: invert(1) contrast(1.2) sepia(1) hue-rotate(-30deg) saturate(3);
         }
 
         .etymology {
@@ -914,42 +918,5 @@
         </div>
     </footer>
 
-    <script>
-    // Remove white background from logo PNG → transparent, recolor to light
-    function processLogo(img, targetColor) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        ctx.drawImage(img, 0, 0);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-            const r = data[i], g = data[i+1], b = data[i+2];
-            // Calculate luminance — white/near-white becomes transparent
-            const lum = (r * 0.299 + g * 0.587 + b * 0.114);
-            if (lum > 200) {
-                data[i+3] = 0; // fully transparent
-            } else {
-                // Recolor dark pixels to target light color
-                data[i]   = targetColor[0];
-                data[i+1] = targetColor[1];
-                data[i+2] = targetColor[2];
-                // Keep some anti-aliasing: use inverse luminance as alpha
-                data[i+3] = Math.round(255 * (1 - lum / 255));
-            }
-        }
-        ctx.putImageData(imageData, 0, 0);
-        img.src = canvas.toDataURL('image/png');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        const light = [232, 229, 224]; // var(--text) #e8e5e0
-        document.querySelectorAll('#hero-logo, #nav-logo').forEach(img => {
-            if (img.complete) processLogo(img, light);
-            else img.onload = () => processLogo(img, light);
-        });
-    });
-    </script>
 </body>
 </html>
