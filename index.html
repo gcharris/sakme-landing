@@ -75,8 +75,7 @@
         nav .nav-brand img {
             height: 28px;
             width: auto;
-            mix-blend-mode: screen;
-            filter: brightness(1.2) contrast(1.1);
+            filter: url(#logo-gold-filter);
         }
 
         nav .nav-links {
@@ -158,8 +157,7 @@
             height: clamp(56px, 11vw, 100px);
             width: auto;
             object-fit: contain;
-            mix-blend-mode: screen;
-            filter: brightness(1.2) contrast(1.1);
+            filter: url(#logo-gold-filter);
         }
 
         .etymology {
@@ -695,10 +693,21 @@
     </style>
 </head>
 <body>
+    <!-- SVG Filter to cleanly extract black text from white background and colorize it -->
+    <svg width="0" height="0" style="position:absolute; width:0; height:0;">
+      <filter id="logo-gold-filter">
+        <feColorMatrix type="matrix" values="
+          0 0 0 0 0.94   
+          0 0 0 0 0.86   
+          0 0 0 0 0.70   
+         -0.333 -0.333 -0.333 0 1
+        "/>
+      </filter>
+    </svg>
 
     <!-- Nav -->
     <nav>
-        <a href="/" class="nav-brand"><img src="assets/sakme_wordmark.png" alt="Sakme" id="nav-logo"></a>
+        <a href="/" class="nav-brand"><img src="assets/sakme_logo.png" alt="Sakme" id="nav-logo"></a>
         <div class="nav-links">
             <a href="#how">How it works</a>
             <a href="#tiers">Pricing</a>
@@ -710,7 +719,7 @@
     <!-- Hero -->
     <section class="hero">
         <h1 class="brand-container">
-            <img src="assets/sakme_wordmark.png" alt="Sakme" class="brand-img" id="hero-logo">
+            <img src="assets/sakme_logo.png" alt="Sakme" class="brand-img" id="hero-logo">
         </h1>
         <h2 class="hero-headline">An AI coworking space where your <em>expertise</em> becomes your livelihood</h2>
         <p class="hero-sub">
