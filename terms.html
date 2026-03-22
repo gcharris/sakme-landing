@@ -7,28 +7,44 @@
     <meta name="description" content="Sakme Terms of Service. The rules for using Sakme, your rights to your creative work, and our commitments to you.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0d'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='bold' fill='%23e8e5e0'%3ES%3C/text%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0c0b0e;
-            --surface: #13121a;
-            --border: #1e1e24;
-            --text: #e8e6e3;
-            --text-secondary: #9a9a9f;
-            --accent-red: #c45c4a;
-            --accent-green: #5aac7a;
-            --accent-blue: #5b7db1;
-            --accent-warm: #d4a574;
+            --bg: #0a0a0d;
+            --surface: #111116;
+            --surface-raised: #18181f;
+            --border: #1e1e26;
+            --border-subtle: #16161c;
+            --text: #e8e5e0;
+            --text-secondary: #8e8e96;
+            --text-dim: #5a5a62;
+            --accent-warm: #c8956a;
+            --accent-warm-glow: rgba(200, 149, 106, 0.08);
+            --accent-red: #b85a4a;
+            --accent-green: #5a9a72;
+            --accent-blue: #5878a8;
+            --accent-cream: #f0e6d6;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
         nav {
@@ -53,8 +69,8 @@
         }
 
         .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
             font-weight: 500;
         }
 
@@ -65,10 +81,11 @@
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
         }
 
         .effective-date {
@@ -141,8 +158,8 @@
 </head>
 <body>
     <nav>
-        <a href="/" class="nav-logo">Sakme</a>
-        <div>
+        <a href="/" class="nav-brand"><img src="assets/sakme_logo.png" alt="Sakme" id="nav-logo" style="height: 28px; width: auto; opacity: 0; transition: opacity 0.5s ease;"></a>
+        <div style="font-size: 0.82rem; letter-spacing: 0.02em;">
             <a href="/" style="margin-right: 1.5rem;">Home</a>
             <a href="/privacy.html" style="margin-right: 1.5rem;">Privacy</a>
             <a href="/terms.html" style="color: var(--accent-warm);">Terms</a>
@@ -269,5 +286,34 @@
             <a href="mailto:hello@sakme.ai">Contact</a>
         </div>
     </footer>
+    <script>
+    function processLogo(img, targetColor) {
+        if (img.dataset.processed) return;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.naturalWidth || img.width || 800;
+        canvas.height = img.naturalHeight || img.height || 200;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i+1], b = data[i+2];
+            const lum = (r * 0.299 + g * 0.587 + b * 0.114);
+            if (lum > 200) { data[i+3] = 0; }
+            else { data[i] = targetColor[0]; data[i+1] = targetColor[1]; data[i+2] = targetColor[2]; data[i+3] = Math.round(255 * (1 - lum / 255)); }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        img.src = canvas.toDataURL('image/png');
+        img.dataset.processed = "true";
+        requestAnimationFrame(() => { img.style.opacity = '1'; });
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        const light = [232, 229, 224];
+        document.querySelectorAll('#nav-logo').forEach(img => {
+            if (img.complete && img.naturalHeight !== 0) { processLogo(img, light); }
+            else { img.onload = () => processLogo(img, light); }
+        });
+    });
+    </script>
 </body>
 </html>
