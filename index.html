@@ -492,6 +492,57 @@
             font-weight: 300;
         }
 
+        /* --- Continuity Proof --- */
+        .continuity-proof {
+            padding: 5rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .continuity-inner {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .continuity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .continuity-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem 1.75rem;
+        }
+
+        .continuity-card.featured {
+            border-color: var(--accent-warm);
+            background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
+        }
+
+        .continuity-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.9rem;
+        }
+
+        .continuity-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .continuity-card p {
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
         /* --- Tiers --- */
         .tiers {
             padding: 6rem 2rem;
@@ -791,6 +842,36 @@
                 <div class="domain-features">
                     <span>Originality tracking across everything you make</span>
                     <span>Quality standards that reflect your judgement</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Continuity Proof -->
+    <section class="continuity-proof">
+        <div class="continuity-inner">
+            <div class="section-header">
+                <h2>What continuity feels like</h2>
+                <p>The difference is not more AI. It is that your context is still there when the work resumes.</p>
+            </div>
+            <div class="continuity-grid">
+                <div class="continuity-card">
+                    <div class="continuity-label">Stateless Tool</div>
+                    <h3>Every request starts over</h3>
+                    <p>
+                        You ask for help on a draft and get something competent but generic. It does not know what
+                        you rejected last week, what tone you are protecting, or which sources actually matter to
+                        this project.
+                    </p>
+                </div>
+                <div class="continuity-card featured">
+                    <div class="continuity-label">Sakme After Real Use</div>
+                    <h3>Your context is still alive</h3>
+                    <p>
+                        The same request starts from your sources, your prior decisions, and your standards. The
+                        workspace remembers what you kept, what you cut, and what &ldquo;better&rdquo; means in your
+                        practice, so the work can move forward instead of beginning again.
+                    </p>
                 </div>
             </div>
         </div>

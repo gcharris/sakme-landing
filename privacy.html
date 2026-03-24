@@ -228,17 +228,17 @@
         <h3>2.2 Creative Content</h3>
         <p>When you use Sakme, we store:</p>
         <ul>
-            <li><strong>Your creative work:</strong> Projects, scenes, story elements, and creative outputs you generate</li>
-            <li><strong>Your Memory (Codex):</strong> Knowledge crystallized from your creative sessions, organized in trust tiers you control</li>
-            <li><strong>Voice calibration data:</strong> Preferences about your creative voice, developed through tournament selections</li>
-            <li><strong>Creative decisions:</strong> Choices you make during creation (accept, reject, modify) that help your Alter Ego understand your taste</li>
+            <li><strong>Your creative work:</strong> Projects, drafts, structured materials, and outputs you choose to save in the workspace</li>
+            <li><strong>Your workspace memory:</strong> Stored context, preference signals, and continuity data that help the service work better for you over time</li>
+            <li><strong>Your preferences:</strong> Signals about style, choices, and priorities inferred from how you use the product</li>
+            <li><strong>Your usage decisions:</strong> Actions such as accepting, editing, dismissing, exporting, or publishing content</li>
         </ul>
 
         <h3>2.3 Connected Sources</h3>
-        <p>When you connect external services (Gmail, Google Drive, YouTube, Pinterest, Readwise, NotebookLM), we:</p>
+        <p>When you connect external services or imported sources, we:</p>
         <ul>
             <li>Access only the data types you explicitly authorize through OAuth consent screens</li>
-            <li>Store metadata and extracted insights locally in your account — <strong>not</strong> copies of the original content</li>
+            <li>Store only the data needed to provide the feature or preserve useful continuity inside your account</li>
             <li>Use read-only access wherever possible</li>
             <li>Allow you to disconnect any source at any time, which stops all future data access</li>
         </ul>
@@ -269,14 +269,14 @@
                     <td>Contract performance</td>
                 </tr>
                 <tr>
-                    <td>Personalize your Alter Ego</td>
+                    <td>Personalize your workspace experience</td>
                     <td>Creative decisions, voice data</td>
                     <td>Contract performance + consent</td>
                 </tr>
                 <tr>
-                    <td>Crystallize knowledge into your Memory</td>
+                    <td>Build continuity from your prior use</td>
                     <td>Session content, creative decisions</td>
-                    <td>Consent (toggleable in Settings)</td>
+                    <td>Contract performance + consent</td>
                 </tr>
                 <tr>
                     <td>Process payments</td>
@@ -315,79 +315,75 @@
         <h3>5.1 Where We Store Data</h3>
         <p>Your data is stored on Google Cloud Platform (GCP) infrastructure in the United States. All data is encrypted at rest (AES-256) and in transit (TLS 1.3).</p>
 
-        <h3>5.2 End-to-End Encryption and User-Held Keys</h3>
-        <p>Your Memory (Codex), Canon calibration data, and Crystallization outputs are encrypted using keys that <strong>you hold</strong>. This means:</p>
+        <h3>5.2 Encryption and Account Security</h3>
+        <p>Sakme uses industry-standard security controls to protect stored workspace data and account information. This includes encryption in transit, encryption at rest, and access controls designed to limit who can access operational systems.</p>
         <ul>
-            <li><strong>We cannot read your Codex.</strong> Your accumulated self-knowledge is encrypted with keys derived from your credentials. Our servers store only ciphertext.</li>
-            <li><strong>You control access.</strong> Only you (or someone with your encryption keys) can decrypt your Memory. We cannot access, search, or analyze your Codex contents — even if compelled to by a third party.</li>
-            <li><strong>Your keys, your data.</strong> If you lose your encryption keys and have not set up a recovery method, your encrypted data becomes permanently inaccessible. We cannot recover it for you.</li>
+            <li><strong>Access is limited.</strong> We restrict production access to authorized personnel who need it to operate, secure, or support the service.</li>
+            <li><strong>You are responsible for your credentials.</strong> You must keep your account and any connected-provider credentials secure.</li>
+            <li><strong>Security controls may evolve.</strong> We may update technical safeguards over time as the product and threat environment change.</li>
         </ul>
-        <p>Creative content in active sessions may be temporarily decrypted in memory for processing. This processing happens within our secured infrastructure and no decrypted content is persisted to disk or shared with third parties.</p>
+        <p>Workspace content may be processed within our infrastructure while responding to your requests or operating requested features.</p>
 
-        <h3>5.3 Provenance and Blockchain Records</h3>
-        <p>When you publish Talents or creative bundles to the Sakme marketplace, a provenance certificate may be anchored to a blockchain smart contract. These on-chain records contain:</p>
+        <h3>5.3 Publishing and Persistent Records</h3>
+        <p>If Sakme offers publishing, marketplace, or provenance features, some publication-related records may be persistent once created.</p>
         <ul>
-            <li><strong>Cryptographic hashes</strong> of your published work (not the work itself)</li>
-            <li><strong>Provenance scores</strong> measuring the degree of human creative involvement</li>
-            <li><strong>Timestamps</strong> establishing when the work was published</li>
-            <li><strong>Soulbound identity tokens</strong> linking the provenance to your creator identity</li>
+            <li><strong>Publication metadata</strong> may be retained to support auditability, attribution, or marketplace operation</li>
+            <li><strong>Some records may not be immediately reversible</strong> once content has been published or distributed</li>
+            <li><strong>Feature details may vary</strong> depending on the publishing system in use at the time</li>
         </ul>
-        <p>On-chain records are immutable — they cannot be deleted by us or anyone. However, these records contain no readable content. They are cryptographic artifacts that are only meaningful when combined with the decryption keys stored in your Sakme account. When you delete your account, the keys are destroyed. The on-chain records remain but become permanently inaccessible and unlinked from your identity.</p>
-        <p>All blockchain records can be downloaded through <strong>Settings → Data Management → Export Provenance Records</strong>. These exports include the smart contract addresses, transaction hashes, and your associated keys, allowing you to independently verify and access your provenance history outside of Sakme using any compatible blockchain viewer and your Seitiate encryption keys.</p>
+        <p>Where a feature creates persistent publication records, account deletion may not remove every externally published or already-distributed record. We will describe any such behavior in the relevant feature flow when it exists.</p>
 
-        <h3>5.4 Tenant Isolation</h3>
-        <p>Each Sakme account operates as an isolated tenant. Your creative data, Memory, and Alter Ego configuration are stored in dedicated, tenant-scoped database partitions. No data crosses between accounts.</p>
+        <h3>5.4 Account Isolation</h3>
+        <p>Sakme is designed so each account operates as its own workspace. We use logical separation and access controls to prevent ordinary cross-account access.</p>
 
         <h3>5.5 AI Processing</h3>
-        <p>When your creative content is processed by AI models (currently Google Gemini and, optionally, models you provide via BYOK — Bring Your Own Key), the content is:</p>
+        <p>When your content is processed by AI providers on your behalf, the content is used to respond to your request or operate the feature you selected.</p>
         <ul>
-            <li>Sent to the AI provider only for real-time processing of your request</li>
-            <li>Not retained by the AI provider beyond the processing window (per Google's API data usage policies)</li>
-            <li>Not used to train or improve the AI provider's models</li>
+            <li>Shared only as needed to provide the requested response or feature</li>
+            <li>Handled under the applicable provider and infrastructure terms in effect at the time</li>
+            <li>Not sold by us or shared for third-party marketing purposes</li>
         </ul>
 
-        <h3>5.6 Governance Layer</h3>
-        <p>Sakme includes a narrative governance system (internally called the Governor) that reviews creative outputs for quality and consistency. This processing happens entirely within our infrastructure — no creative content is sent to external services for governance purposes.</p>
+        <h3>5.6 Quality and Safety Review</h3>
+        <p>Sakme may apply internal quality, integrity, or safety checks to outputs and workspace activity in order to operate the service responsibly and improve product reliability.</p>
 
         <h2>6. Your Rights and Controls</h2>
 
         <h3>6.1 Access and Download</h3>
-        <p>You can download all of your data at any time through <strong>Settings → Data Management → Export All Data</strong>. The export includes:</p>
+        <p>You may request access to your data and, where supported, download a copy of your saved workspace information. Available export formats may vary by feature.</p>
         <ul>
-            <li>All creative projects and scenes</li>
-            <li>Your complete Memory (Codex) with trust tier annotations</li>
-            <li>Voice calibration data and creative decision history</li>
-            <li>Alter Ego configuration and growth metrics</li>
-            <li>Connected source metadata</li>
-            <li>Notification preferences and account settings</li>
+            <li>Creative projects and saved content</li>
+            <li>Workspace memory and preference data associated with your account</li>
+            <li>Connected source metadata where applicable</li>
+            <li>Account and notification settings</li>
         </ul>
-        <p>The export is delivered as a portable JSON archive. Individual projects can also be exported in standard creative formats (Fountain, manuscript).</p>
+        <p>We aim to provide exports in practical, portable formats where reasonably possible.</p>
 
         <h3>6.2 Deletion</h3>
-        <p>You can delete your account through <strong>Settings → Data Management → Delete Account</strong>. Upon deletion:</p>
+        <p>You may request deletion of your account. Upon deletion:</p>
         <ul>
             <li>All account data is permanently removed within 30 days</li>
-            <li>All creative content, Memory, and Alter Ego data is destroyed</li>
+            <li>Saved creative content and workspace data are scheduled for deletion</li>
             <li>All connected source authorizations are revoked</li>
             <li>Billing subscriptions are cancelled</li>
             <li>Anonymized, aggregated usage statistics (which cannot identify you) may be retained</li>
         </ul>
 
         <div class="warning-box">
-            <p><strong>Blockchain Provenance Records:</strong> If you have published Talents or creative bundles with blockchain-anchored provenance (see Section 5.3), those on-chain records are immutable and cannot be deleted. When you delete your account, the encryption keys that link those records to your identity are destroyed — making the on-chain artifacts permanently inaccessible and anonymous. See Section 5.3 for full details on what is stored on-chain and how to export your provenance records before deletion.</p>
+            <p><strong>Persistent publication records:</strong> If you used a feature that creates public, marketplace, or otherwise persistent records, deleting your account may not remove those records everywhere they were already published or distributed.</p>
         </div>
 
         <h3>6.3 Correction</h3>
-        <p>You can update your account information, Alter Ego settings, and preferences at any time through the Settings panel.</p>
+        <p>You may update or correct account information and workspace preferences through available account controls or by contacting us.</p>
 
-        <h3>6.4 Crystallization Consent</h3>
-        <p>The process of crystallizing your creative decisions into your Memory is controlled by a toggle in <strong>Settings → Privacy → Crystallization Consent</strong>. When disabled, your sessions are processed in real-time but no persistent self-knowledge is accumulated. You can disable this at any time without losing previously crystallized knowledge.</p>
+        <h3>6.4 Personalization Controls</h3>
+        <p>Depending on the feature, Sakme may offer controls over personalization, remembered context, or connected sources. Availability may change as the product evolves.</p>
 
         <h3>6.5 Data Retention</h3>
-        <p>You control how long session data is retained through <strong>Settings → Privacy → Data Retention</strong> (configurable from 30 to 365 days). Crystallized knowledge in your Memory persists until you explicitly delete it or your account.</p>
+        <p>We retain data for as long as needed to provide the service, comply with legal obligations, resolve disputes, and enforce our agreements, unless you delete the relevant data or account first.</p>
 
         <h3>6.6 Connected Source Control</h3>
-        <p>You can view, disconnect, or reconnect any external data source through <strong>Settings → Connectors</strong>. Disconnecting a source immediately revokes Sakme's access and stops all future data retrieval from that service.</p>
+        <p>You may disconnect connected sources at any time using available account controls. Disconnecting a source stops future access from that point forward.</p>
 
         <h2>7. Cookies and Tracking</h2>
         <p>Sakme uses only <strong>essential cookies</strong> required for authentication and session management. We do not use:</p>
@@ -417,7 +413,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>AI Model Providers (Google Gemini)</td>
+                    <td>AI model providers</td>
                     <td>Creative content generation</td>
                     <td>Prompt content for real-time processing only</td>
                 </tr>
@@ -427,7 +423,7 @@
                     <td>Billing information only</td>
                 </tr>
                 <tr>
-                    <td>Authentication (Firebase Auth)</td>
+                    <td>Authentication providers</td>
                     <td>Account sign-in</td>
                     <td>Email, name (from OAuth provider)</td>
                 </tr>
@@ -463,8 +459,8 @@
         <p>&copy; 2026 Agent-C LLC. All rights reserved.</p>
         <div style="margin-top: 0.5rem;">
             <a href="/">Home</a>
-            <a href="/privacy.html">Privacy Policy</a>
-            <a href="/terms.html">Terms of Service</a>
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
             <a href="mailto:hello@sakme.ai">Contact</a>
         </div>
     </footer>
